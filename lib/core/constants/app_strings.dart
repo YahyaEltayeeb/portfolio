@@ -12,10 +12,22 @@ abstract final class AppStrings {
   static const String greeting = 'Hi, I am';
   static const String name = 'Yahya Mohamed';
   static const String title = 'Flutter Developer';
+  static const String location = 'Alexandria, Egypt';
+  static const String experienceYears = '2+ Years';
+  static const String availability = 'Available for Opportunities';
+
   static const String heroTagline =
       '2+ Years Experience • Flutter Developer • Available for Opportunities';
-  static const String heroBio =
-      'Passionate Flutter Developer dedicated to crafting high-performance, pixel-perfect, and responsive mobile and web applications with clean architecture and delightful user experiences.';
+
+  static const String heroDescription =
+      'I build scalable, production-ready mobile applications with clean, maintainable architecture and smooth user experiences.';
+
+  static const String aboutDescription =
+      'Flutter Developer with 2+ years of hands-on experience building production-ready mobile applications using Clean Architecture, BLoC/Cubit, RESTful APIs, and Firebase.\n\n'
+      'I have delivered production applications featuring real-time tracking, push notifications, payment integrations, Google Maps, and background location services. '
+      'Experienced in Agile/Scrum environments and writing Unit and Widget Tests to ensure application quality and reliability. '
+      'I focus on building clean, maintainable, testable, and high-performance mobile experiences.';
+
   static const String viewProjects = 'View Projects';
   static const String downloadCv = 'Download CV';
 
@@ -26,7 +38,7 @@ abstract final class AppStrings {
 
   static const String projectsTitle = 'Featured Projects';
   static const String projectsSubtitle =
-      'A curated showcase of production applications and open engineering projects';
+      'A curated showcase of production applications and engineering projects';
 
   static const String experienceTitle = 'Work Experience';
   static const String experienceSubtitle =
@@ -38,20 +50,20 @@ abstract final class AppStrings {
 
   static const String contactTitle = 'Get in Touch';
   static const String contactSubtitle =
-      'Open for new engineering roles, collaborations, and consulting opportunities';
+      'Feel free to connect via LinkedIn, GitHub, or WhatsApp for collaboration and opportunities';
 
-  // How I Work Steps
-  static const String step1Title = 'Understand the Requirements';
+  // How I Work Steps (5 Steps)
+  static const String step1Title = 'Understand Requirements';
   static const String step1Desc =
-      'Deep dive into business goals, user personas, edge cases, and scope to align technical direction with business value.';
+      'Deep dive into business goals, user personas, and technical scope to align development with business value.';
 
-  static const String step2Title = 'Plan the Architecture';
+  static const String step2Title = 'Plan Architecture';
   static const String step2Desc =
-      'Design clean, modular architecture (Feature-First / Clean Architecture) with decoupled layers, state management, and reliable data flow.';
+      'Design clean, modular architecture (Clean Architecture, BLoC/Cubit) with decoupled layers, state management, and reliable data flow.';
 
   static const String step3Title = 'Build & Integrate';
   static const String step3Desc =
-      'Develop pixel-perfect, responsive UI, fluid micro-interactions, robust offline caching, and secure REST/Firebase API integrations.';
+      'Develop pixel-perfect, responsive UI, fluid micro-interactions, robust offline caching, and RESTful/Firebase API integrations.';
 
   static const String step4Title = 'Test & Optimize';
   static const String step4Desc =
@@ -59,9 +71,9 @@ abstract final class AppStrings {
 
   static const String step5Title = 'Publish & Support';
   static const String step5Desc =
-      'Deploy smoothly to App Store and Google Play, set up analytics and crash reporting, and deliver continuous maintenance and enhancements.';
+      'Deploy to App Store and Google Play, set up continuous monitoring, and deliver ongoing maintenance and enhancements.';
 
-  // Social & Contact
+  // Social & Contact (Only LinkedIn, GitHub, WhatsApp)
   static const String linkedIn = 'LinkedIn';
   static const String gitHub = 'GitHub';
   static const String whatsApp = 'WhatsApp';
@@ -70,7 +82,7 @@ abstract final class AppStrings {
   static const String liveAppBadge = 'Live App';
   static const String viewProject = 'View Project';
   static const String appStore = 'App Store';
-  static const String playStore = 'Google Play';
+  static const String playStore = 'Play Store';
   static const String liveDemo = 'Live Demo';
 
   // Project Details

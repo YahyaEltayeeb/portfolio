@@ -1,19 +1,17 @@
 /// Centralized external links for Yahya Mohamed's portfolio.
 ///
 /// NOTE: Only LinkedIn, GitHub, and WhatsApp are supported.
-/// All URLs default to null until real profile links are provided.
+/// Do not add email or any other platform.
 abstract final class AppLinks {
   /// LinkedIn profile URL.
-  // TODO: Provide real LinkedIn profile URL (e.g. 'https://www.linkedin.com/in/your-profile')
-  static const String? linkedIn = null;
+  static const String linkedIn =
+      'https://www.linkedin.com/in/yahya-mohamed-yahyamohamed/';
 
   /// GitHub profile URL.
-  // TODO: Provide real GitHub profile URL (e.g. 'https://github.com/your-username')
-  static const String? gitHub = null;
+  static const String gitHub = 'https://github.com/YahyaEltayeeb';
 
   /// WhatsApp direct chat URL.
-  // TODO: Provide real WhatsApp URL (e.g. 'https://wa.me/your-number')
-  static const String? whatsApp = null;
+  static const String whatsApp = 'https://wa.me/201289078927';
 
   /// Utility validator to ensure buttons only render when a valid URL is present.
   static bool isValid(String? url) {

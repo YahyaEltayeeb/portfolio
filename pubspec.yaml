@@ -64,12 +64,12 @@ flutter:
   assets:
     - assets/images/
     - assets/images/projects/
-    - assets/images/projects/zadana_user/
-    - assets/images/projects/zadana_driver/
+    - assets/images/projects/zadna_groceries/
+    - assets/images/projects/zadna_delivery/
     - assets/images/projects/super_fitness/
-    - assets/images/projects/flowery/
-    - assets/images/projects/rider_tracking/
-    - assets/images/projects/quiz_app/
+    - assets/images/projects/flowery_ecommerce/
+    - assets/images/projects/flowery_tracking/
+    - assets/images/projects/exam_app/
     - assets/docs/
 
   # An image asset can refer to one or more resolution-specific "variants", see
