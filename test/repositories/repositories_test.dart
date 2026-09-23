@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:portfolio/portfolio/models/social_link_model.dart';
 import 'package:portfolio/portfolio/repositories/experience_repository.dart';
@@ -7,7 +8,7 @@ import 'package:portfolio/portfolio/repositories/social_links_repository.dart';
 import 'package:portfolio/portfolio/repositories/workflow_repository.dart';
 
 void main() {
-  group('ProjectsRepository Data Tests', () {
+  group('ProjectsRepository Data & Asset Tests', () {
     const repository = ProjectsRepository();
     final projects = repository.getProjects();
 
@@ -57,6 +58,60 @@ void main() {
           p.githubUrl!.startsWith('https://github.com/YahyaEltayeeb/'),
           isTrue,
         );
+      }
+    });
+
+    test('all projects have cover.png as coverAsset', () {
+      for (final p in projects) {
+        expect(p.coverAsset.endsWith('/cover.png'), isTrue);
+        expect(
+          File(p.coverAsset).existsSync(),
+          isTrue,
+          reason: 'Cover file missing: ${p.coverAsset}',
+        );
+      }
+    });
+
+    test('screenshot counts match detected assets per project', () {
+      final zadnaGroceries = projects.firstWhere(
+        (p) => p.id == 'zadna-groceries',
+      );
+      final zadnaDelivery = projects.firstWhere(
+        (p) => p.id == 'zadna-delivery',
+      );
+      final superFitness = projects.firstWhere((p) => p.id == 'super-fitness');
+      final floweryEcommerce = projects.firstWhere(
+        (p) => p.id == 'flowery-ecommerce',
+      );
+      final floweryTracking = projects.firstWhere(
+        (p) => p.id == 'flowery-tracking',
+      );
+      final examApp = projects.firstWhere((p) => p.id == 'exam-app');
+
+      expect(zadnaGroceries.screenshotAssets.length, equals(7));
+      expect(zadnaDelivery.screenshotAssets.length, equals(5));
+      expect(superFitness.screenshotAssets.length, equals(9));
+      expect(floweryEcommerce.screenshotAssets.length, equals(11));
+      expect(floweryTracking.screenshotAssets.length, equals(10));
+      expect(examApp.screenshotAssets.length, equals(5));
+    });
+
+    test('screenshots preserve strict numerical order', () {
+      for (final p in projects) {
+        for (int i = 0; i < p.screenshotAssets.length; i++) {
+          final asset = p.screenshotAssets[i];
+          final expectedNum = (i + 1).toString().padLeft(2, '0');
+          expect(
+            asset.contains(expectedNum),
+            isTrue,
+            reason: 'Asset $asset expected to contain $expectedNum',
+          );
+          expect(
+            File(asset).existsSync(),
+            isTrue,
+            reason: 'Screenshot file missing: $asset',
+          );
+        }
       }
     });
   });
