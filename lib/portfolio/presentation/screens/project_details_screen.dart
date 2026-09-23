@@ -101,10 +101,14 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                         verticalSpace(40),
 
                         // Overview & Two-Column Layout (Desktop) or Stacked (Mobile)
-                        if (isMobile)
-                          _buildMobileContent()
-                        else
-                          _buildDesktopContent(),
+                        LayoutBuilder(
+                          builder: (context, constraints) {
+                            if (constraints.maxWidth < 960) {
+                              return _buildMobileContent();
+                            }
+                            return _buildDesktopContent();
+                          },
+                        ),
                         verticalSpace(48),
 
                         // Screenshot Gallery (if available)
@@ -164,21 +168,20 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+        Wrap(
+          spacing: 12,
+          runSpacing: 8,
+          crossAxisAlignment: WrapCrossAlignment.center,
           children: [
-            Expanded(
-              child: Text(
-                widget.project.title,
-                style: TextStyle(
-                  fontSize: isMobile ? 26 : 36,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryText,
-                ),
+            Text(
+              widget.project.title,
+              style: TextStyle(
+                fontSize: isMobile ? 24 : 36,
+                fontWeight: FontWeight.bold,
+                color: AppColors.primaryText,
               ),
             ),
-            if (widget.project.isProduction) ...[
-              const SizedBox(width: 12),
+            if (widget.project.isProduction)
               Container(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 12,
@@ -209,7 +212,6 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                   ],
                 ),
               ),
-            ],
           ],
         ),
         if (validActions.isNotEmpty) ...[
@@ -232,7 +234,6 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   Widget _buildCover() {
     return Container(
       width: double.infinity,
-      constraints: const BoxConstraints(maxHeight: 520),
       decoration: BoxDecoration(
         color: AppColors.card,
         borderRadius: BorderRadius.circular(16),
@@ -247,9 +248,15 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: PortfolioImage(
-          assetPath: widget.project.coverAsset,
-          fit: BoxFit.contain,
+        child: AspectRatio(
+          aspectRatio: widget.project.coverAspectRatio,
+          child: Center(
+            child: PortfolioImage(
+              assetPath: widget.project.coverAsset,
+              fit: BoxFit.contain,
+              alignment: Alignment.center,
+            ),
+          ),
         ),
       ),
     );
@@ -315,6 +322,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
 
   Widget _buildSectionTitle(String title) {
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
         Container(
           width: 3,
@@ -325,12 +333,14 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
           ),
         ),
         const SizedBox(width: 8),
-        Text(
-          title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: AppColors.primaryText,
+        Flexible(
+          child: Text(
+            title,
+            style: const TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: AppColors.primaryText,
+            ),
           ),
         ),
       ],
@@ -454,6 +464,10 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
 
   Widget _buildGallerySection(bool isMobile) {
     final count = widget.project.screenshotAssets.length;
+    final bool isLandscape = widget.project.screenshotAspectRatio > 1.2;
+    final double galleryHeight = isLandscape
+        ? (isMobile ? 180.0 : 260.0)
+        : (isMobile ? 280.0 : 380.0);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -485,7 +499,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
         ),
         verticalSpace(16),
         SizedBox(
-          height: 380,
+          height: galleryHeight,
           child: ListView.separated(
             controller: _galleryScrollController,
             scrollDirection: Axis.horizontal,
@@ -494,16 +508,19 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
             separatorBuilder: (context, index) => const SizedBox(width: 16),
             itemBuilder: (context, index) {
               final path = widget.project.screenshotAssets[index];
-              return _GalleryItemCard(
-                assetPath: path,
-                onTap: () {
-                  FullScreenImageViewer.show(
-                    context,
-                    images: widget.project.screenshotAssets,
-                    initialIndex: index,
-                    title: widget.project.title,
-                  );
-                },
+              return AspectRatio(
+                aspectRatio: widget.project.screenshotAspectRatio,
+                child: _GalleryItemCard(
+                  assetPath: path,
+                  onTap: () {
+                    FullScreenImageViewer.show(
+                      context,
+                      images: widget.project.screenshotAssets,
+                      initialIndex: index,
+                      title: widget.project.title,
+                    );
+                  },
+                ),
               );
             },
           ),
@@ -536,7 +553,6 @@ class _GalleryItemCardState extends State<_GalleryItemCard> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
-          width: 220,
           decoration: BoxDecoration(
             color: AppColors.card,
             borderRadius: BorderRadius.circular(14),
@@ -559,12 +575,9 @@ class _GalleryItemCardState extends State<_GalleryItemCard> {
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(14),
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: PortfolioImage(
-                    assetPath: widget.assetPath,
-                    fit: BoxFit.contain,
-                  ),
+                child: PortfolioImage(
+                  assetPath: widget.assetPath,
+                  fit: BoxFit.contain,
                 ),
               ),
               if (_isHovered)

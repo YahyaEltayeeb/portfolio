@@ -28,6 +28,8 @@ class ProjectModel {
   final List<String> techStack;
   final String coverAsset;
   final List<String> screenshotAssets;
+  final double coverAspectRatio;
+  final double screenshotAspectRatio;
   final String? appStoreUrl;
   final String? playStoreUrl;
   final String? githubUrl;
@@ -44,6 +46,8 @@ class ProjectModel {
     required this.techStack,
     required this.coverAsset,
     this.screenshotAssets = const [],
+    this.coverAspectRatio = 16 / 9,
+    this.screenshotAspectRatio = 16 / 9,
     this.appStoreUrl,
     this.playStoreUrl,
     this.githubUrl,

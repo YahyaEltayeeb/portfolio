@@ -32,9 +32,9 @@ abstract final class AppStrings {
   static const String downloadCv = 'Download CV';
 
   // Section Headers & Subtitles
-  static const String skillsTitle = 'Skills & Tech Stack';
+  static const String skillsTitle = 'Skills & Technologies';
   static const String skillsSubtitle =
-      'Technologies and methodologies I leverage to build robust applications';
+      'The tools and practices I use to build production-ready applications.';
 
   static const String projectsTitle = 'Featured Projects';
   static const String projectsSubtitle =

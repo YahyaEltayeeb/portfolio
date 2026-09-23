@@ -7,11 +7,11 @@ abstract final class Responsive {
   static const double maxContentWidth = 1200.0;
 
   static bool isMobile(BuildContext context) =>
-      MediaQuery.sizeOf(context).width < mobileBreakpoint;
+      MediaQuery.sizeOf(context).width <= mobileBreakpoint;
 
   static bool isTablet(BuildContext context) {
     final width = MediaQuery.sizeOf(context).width;
-    return width >= mobileBreakpoint && width < tabletBreakpoint;
+    return width > mobileBreakpoint && width < tabletBreakpoint;
   }
 
   static bool isDesktop(BuildContext context) =>
@@ -26,7 +26,7 @@ abstract final class Responsive {
   }) {
     final width = MediaQuery.sizeOf(context).width;
     if (width >= tabletBreakpoint) return desktop;
-    if (width >= mobileBreakpoint && tablet != null) return tablet;
+    if (width > mobileBreakpoint && tablet != null) return tablet;
     return mobile;
   }
 }

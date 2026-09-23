@@ -54,7 +54,7 @@ class PortfolioImage extends StatelessWidget {
       errorBuilder: (context, error, stackTrace) {
         return Container(
           width: width,
-          height: height ?? 200,
+          height: height,
           decoration: BoxDecoration(
             color: AppColors.card,
             borderRadius: borderRadius ?? BorderRadius.zero,

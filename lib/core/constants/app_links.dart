@@ -1,3 +1,5 @@
+import 'package:url_launcher/url_launcher.dart';
+
 /// Centralized external links for Yahya Mohamed's portfolio.
 ///
 /// NOTE: Only LinkedIn, GitHub, and WhatsApp are supported.
@@ -21,6 +23,16 @@ abstract final class AppLinks {
         (trimmed.startsWith('http://') ||
             trimmed.startsWith('https://') ||
             trimmed.startsWith('mailto:') ||
-            trimmed.startsWith('tel:'));
+            trimmed.startsWith('tel:') ||
+            trimmed.startsWith('assets/'));
+  }
+
+  /// Safely open external or asset URL.
+  static Future<void> openUrl(String? url) async {
+    if (!isValid(url)) return;
+    final uri = Uri.parse(url!.trim());
+    if (await canLaunchUrl(uri)) {
+      await launchUrl(uri, mode: LaunchMode.externalApplication);
+    }
   }
 }

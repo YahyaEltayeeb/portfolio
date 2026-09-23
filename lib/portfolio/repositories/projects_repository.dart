@@ -36,6 +36,8 @@ class ProjectsRepository {
           'REST APIs',
         ],
         coverAsset: AppAssets.zadnaGroceriesCover,
+        coverAspectRatio: 1586 / 992,
+        screenshotAspectRatio: 1024 / 1536,
         screenshotAssets: [
           'assets/images/projects/zadna_groceries/01.png',
           'assets/images/projects/zadna_groceries/02.png',
@@ -82,6 +84,8 @@ class ProjectsRepository {
           'REST APIs',
         ],
         coverAsset: AppAssets.zadnaDeliveryCover,
+        coverAspectRatio: 1586 / 992,
+        screenshotAspectRatio: 852 / 1846,
         screenshotAssets: [
           'assets/images/projects/zadna_delivery/01.png',
           'assets/images/projects/zadna_delivery/02.png',
@@ -125,6 +129,8 @@ class ProjectsRepository {
           'REST APIs',
         ],
         coverAsset: AppAssets.superFitnessCover,
+        coverAspectRatio: 1586 / 992,
+        screenshotAspectRatio: 1024 / 1536,
         screenshotAssets: [
           'assets/images/projects/super_fitness/01.png',
           'assets/images/projects/super_fitness/02.png',
@@ -171,6 +177,8 @@ class ProjectsRepository {
           'Dio',
         ],
         coverAsset: AppAssets.floweryEcommerceCover,
+        coverAspectRatio: 1672 / 941,
+        screenshotAspectRatio: 1672 / 941,
         screenshotAssets: [
           'assets/images/projects/flowery_ecommerce/01.png',
           'assets/images/projects/flowery_ecommerce/02.png',
@@ -219,6 +227,8 @@ class ProjectsRepository {
           'Geolocation',
         ],
         coverAsset: AppAssets.floweryTrackingCover,
+        coverAspectRatio: 1672 / 941,
+        screenshotAspectRatio: 1672 / 941,
         screenshotAssets: [
           'assets/images/projects/flowery_tracking/01.png',
           'assets/images/projects/flowery_tracking/02.png',
@@ -266,6 +276,8 @@ class ProjectsRepository {
           'REST APIs',
         ],
         coverAsset: AppAssets.examAppCover,
+        coverAspectRatio: 1672 / 941,
+        screenshotAspectRatio: 1672 / 941,
         screenshotAssets: [
           'assets/images/projects/exam_app/01.png',
           'assets/images/projects/exam_app/02.png',

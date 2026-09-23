@@ -206,23 +206,29 @@ class _FullScreenImageViewerState extends State<FullScreenImageViewer> {
 
             // Main Image Display (InteractiveViewer for zoom/pan)
             Positioned.fill(
-              child: Padding(
-                padding: const EdgeInsets.only(
-                  top: 80,
-                  bottom: 80,
-                  left: 60,
-                  right: 60,
-                ),
-                child: Center(
-                  child: InteractiveViewer(
-                    maxScale: 4.0,
-                    minScale: 0.8,
-                    child: PortfolioImage(
-                      assetPath: widget.images[_currentIndex],
-                      fit: BoxFit.contain,
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final isNarrow = constraints.maxWidth < 768;
+                  return Padding(
+                    padding: EdgeInsets.only(
+                      top: 72,
+                      bottom: isNarrow ? 60 : 72,
+                      left: isNarrow ? 16 : 64,
+                      right: isNarrow ? 16 : 64,
                     ),
-                  ),
-                ),
+                    child: Center(
+                      child: InteractiveViewer(
+                        maxScale: 4.0,
+                        minScale: 0.8,
+                        child: PortfolioImage(
+                          assetPath: widget.images[_currentIndex],
+                          fit: BoxFit.contain,
+                          alignment: Alignment.center,
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
 
