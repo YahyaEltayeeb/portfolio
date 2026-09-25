@@ -97,7 +97,6 @@ class DesktopFloatingNavbar extends StatelessWidget {
                             title: AppStrings.navContact,
                             isActive: activeIndex == 5,
                             onTap: onContactTap,
-                            isButton: true,
                           ),
                         ],
                       );
@@ -117,13 +116,11 @@ class _NavItem extends StatefulWidget {
   final String title;
   final bool isActive;
   final VoidCallback onTap;
-  final bool isButton;
 
   const _NavItem({
     required this.title,
     required this.isActive,
     required this.onTap,
-    this.isButton = false,
   });
 
   @override
@@ -135,38 +132,6 @@ class _NavItemState extends State<_NavItem> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.isButton) {
-      return MouseRegion(
-        cursor: SystemMouseCursors.click,
-        onEnter: (_) => setState(() => _isHovered = true),
-        onExit: (_) => setState(() => _isHovered = false),
-        child: GestureDetector(
-          onTap: widget.onTap,
-          child: AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: widget.isActive || _isHovered
-                  ? AppColors.primaryCyan
-                  : AppColors.primaryCyan.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(20),
-              border: Border.all(color: AppColors.primaryCyan, width: 1),
-            ),
-            child: Text(
-              widget.title,
-              style: AppTypography.heading(
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: widget.isActive || _isHovered
-                    ? AppColors.background
-                    : AppColors.primaryCyan,
-              ),
-            ),
-          ),
-        ),
-      );
-    }
-
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _isHovered = true),

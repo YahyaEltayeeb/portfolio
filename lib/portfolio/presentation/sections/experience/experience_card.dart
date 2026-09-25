@@ -113,179 +113,176 @@ class _ExperienceCardState extends State<ExperienceCard> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                          // Header: Narrow layout (< 560px) vs Desktop layout (>= 560px)
-                          if (isNarrow) ...[
-                            // 1. Date first as simple uppercase text without badge/container
-                            Text(
-                              widget.experience.period.toUpperCase(),
-                              style: AppTypography.mono(
-                                fontSize: 12,
-                                fontWeight: FontWeight.w500,
-                                letterSpacing: 0.8,
-                                color: AppColors.primaryCyan.withValues(
-                                  alpha: 0.85,
-                                ),
-                              ),
+                      // Header: Narrow layout (< 560px) vs Desktop layout (>= 560px)
+                      if (isNarrow) ...[
+                        // 1. Date first as simple uppercase text without badge/container
+                        Text(
+                          widget.experience.period.toUpperCase(),
+                          style: AppTypography.mono(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 0.8,
+                            color: AppColors.primaryCyan.withValues(
+                              alpha: 0.85,
                             ),
-                            const SizedBox(height: 12),
+                          ),
+                        ),
+                        const SizedBox(height: 12),
 
-                            // 2. Job Title below date across full width
-                            Text(
-                              widget.experience.title,
-                              style: AppTypography.heading(
-                                fontSize: 21,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primaryText,
-                                height: 1.25,
-                              ),
-                              softWrap: true,
-                            ),
-                            const SizedBox(height: 6),
+                        // 2. Job Title below date across full width
+                        Text(
+                          widget.experience.title,
+                          style: AppTypography.heading(
+                            fontSize: 21,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.primaryText,
+                            height: 1.25,
+                          ),
+                          softWrap: true,
+                        ),
+                        const SizedBox(height: 6),
 
-                            // 3. Company below job title
-                            Text(
-                              widget.experience.company,
-                              style: AppTypography.heading(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: AppColors.primaryCyan,
-                                height: 1.3,
-                              ),
-                              softWrap: true,
-                            ),
-                          ] else ...[
-                            // Desktop header: Title & Company on left, Period badge on right
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        widget.experience.title,
-                                        style: AppTypography.heading(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: AppColors.primaryText,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 4),
-                                      Text(
-                                        widget.experience.company,
-                                        style: AppTypography.heading(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w600,
-                                          color: AppColors.primaryCyan,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(width: 12),
-                                // Period Badge
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 12,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.primaryCyan.withValues(
-                                      alpha: 0.12,
-                                    ),
-                                    borderRadius: BorderRadius.circular(20),
-                                    border: Border.all(
-                                      color: AppColors.primaryCyan.withValues(
-                                        alpha: 0.3,
-                                      ),
+                        // 3. Company below job title
+                        Text(
+                          widget.experience.company,
+                          style: AppTypography.heading(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: AppColors.primaryCyan,
+                            height: 1.3,
+                          ),
+                          softWrap: true,
+                        ),
+                      ] else ...[
+                        // Desktop header: Title & Company on left, Period badge on right
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    widget.experience.title,
+                                    style: AppTypography.heading(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppColors.primaryText,
                                     ),
                                   ),
-                                  child: Text(
-                                    widget.experience.period,
-                                    style: AppTypography.mono(
-                                      fontSize: 11.5,
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    widget.experience.company,
+                                    style: AppTypography.heading(
+                                      fontSize: 16,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.primaryCyan,
                                     ),
                                   ),
-                                ),
-                              ],
-                            ),
-                          ],
-                          const SizedBox(height: 16),
-
-                          // Responsibilities Bullets
-                          ...widget.experience.responsibilities.map((bullet) {
-                            return Padding(
-                              padding: const EdgeInsets.only(bottom: 8),
-                              child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(top: 7),
-                                    width: 6,
-                                    height: 6,
-                                    decoration: const BoxDecoration(
-                                      color: AppColors.primaryCyan,
-                                      shape: BoxShape.circle,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Text(
-                                      bullet,
-                                      style: AppTypography.body(
-                                        fontSize: 14,
-                                        color: AppColors.secondaryText,
-                                        height: 1.5,
-                                      ),
-                                    ),
-                                  ),
                                 ],
                               ),
-                            );
-                          }),
-                          const SizedBox(height: 16),
+                            ),
+                            const SizedBox(width: 12),
+                            // Period Badge
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 6,
+                              ),
+                              decoration: BoxDecoration(
+                                color: AppColors.primaryCyan.withValues(
+                                  alpha: 0.12,
+                                ),
+                                borderRadius: BorderRadius.circular(20),
+                                border: Border.all(
+                                  color: AppColors.primaryCyan.withValues(
+                                    alpha: 0.3,
+                                  ),
+                                ),
+                              ),
+                              child: Text(
+                                widget.experience.period,
+                                style: AppTypography.mono(
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppColors.primaryCyan,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      const SizedBox(height: 16),
 
-                          // Technologies Tags
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
-                            children: widget.experience.technologies.map((
-                              tech,
-                            ) {
-                              return Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 4,
+                      // Responsibilities Bullets
+                      ...widget.experience.responsibilities.map((bullet) {
+                        return Padding(
+                          padding: const EdgeInsets.only(bottom: 8),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.only(top: 7),
+                                width: 6,
+                                height: 6,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.primaryCyan,
+                                  shape: BoxShape.circle,
                                 ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.background.withValues(
-                                    alpha: 0.6,
-                                  ),
-                                  borderRadius: BorderRadius.circular(6),
-                                  border: Border.all(color: AppColors.border),
-                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Expanded(
                                 child: Text(
-                                  tech,
-                                  style: AppTypography.mono(
-                                    fontSize: 11.5,
+                                  bullet,
+                                  style: AppTypography.body(
+                                    fontSize: 14,
                                     color: AppColors.secondaryText,
-                                    fontWeight: FontWeight.w500,
+                                    height: 1.5,
                                   ),
                                 ),
-                              );
-                            }).toList(),
+                              ),
+                            ],
                           ),
-                        ],
+                        );
+                      }),
+                      const SizedBox(height: 16),
+
+                      // Technologies Tags
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 8,
+                        children: widget.experience.technologies.map((tech) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: AppColors.background.withValues(
+                                alpha: 0.6,
+                              ),
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(color: AppColors.border),
+                            ),
+                            child: Text(
+                              tech,
+                              style: AppTypography.mono(
+                                fontSize: 11.5,
+                                color: AppColors.secondaryText,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
-                    ),
+                    ],
                   ),
                 ),
-              ],
-            );
-          },
+              ),
+            ),
+          ],
         );
-      }
+      },
+    );
+  }
 }

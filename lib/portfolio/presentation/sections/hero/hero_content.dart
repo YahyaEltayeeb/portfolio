@@ -24,45 +24,6 @@ class HeroContent extends StatelessWidget {
           : CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        // Availability / Tagline Badge
-        // Container(
-        //   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-        //   decoration: BoxDecoration(
-        //     color: AppColors.primaryCyan.withValues(alpha: 0.1),
-        //     borderRadius: BorderRadius.circular(20),
-        //     border: Border.all(
-        //       color: AppColors.primaryCyan.withValues(alpha: 0.35),
-        //     ),
-        //   ),
-        //   child: Row(
-        //     mainAxisSize: MainAxisSize.min,
-        //     children: [
-        //       Container(
-        //         width: 8,
-        //         height: 8,
-        //         decoration: const BoxDecoration(
-        //           color: AppColors.success,
-        //           shape: BoxShape.circle,
-        //         ),
-        //       ),
-        //       const SizedBox(width: 8),
-        //       Flexible(
-        //         child: Text(
-        //           AppStrings.heroTagline,
-        //           style: AppTypography.heading(
-        //             fontSize: 12,
-        //             fontWeight: FontWeight.w600,
-        //             color: AppColors.primaryCyan,
-        //             letterSpacing: 0.2,
-        //           ),
-        //           textAlign: isMobile ? TextAlign.center : TextAlign.start,
-        //         ),
-        //       ),
-        //     ],
-        //   ),
-        // ),
-        // verticalSpace(16),
-
         // Greeting
         Text(
           AppStrings.greeting,

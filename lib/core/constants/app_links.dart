@@ -30,15 +30,13 @@ abstract final class AppLinks {
             trimmed.startsWith('https://') ||
             trimmed.startsWith('mailto:') ||
             trimmed.startsWith('tel:') ||
-            trimmed.startsWith('assets/'));
+            trimmed.startsWith('assets/') ||
+            trimmed.endsWith('.pdf'));
   }
 
-  /// Triggers a download of Yahya's CV PDF.
+  /// Opens Yahya's CV PDF directly in the browser viewer instead of forcing a download.
   static Future<void> downloadCv() async {
-    await downloadFileFromAsset(
-      AppAssets.cvPdf,
-      'Yahya_Mohamed_Flutter_Developer_CV.pdf',
-    );
+    await viewPdfDocument(AppAssets.cvPdf, 'yahya_mohamed_cv.pdf');
   }
 
   /// Safely open external or asset URL.
@@ -46,12 +44,9 @@ abstract final class AppLinks {
     if (!isValid(url)) return;
     final trimmed = url!.trim();
 
-    // If it's an asset (e.g. PDF CV), trigger direct download
-    if (trimmed.startsWith('assets/')) {
-      await downloadFileFromAsset(
-        trimmed,
-        'Yahya_Mohamed_Flutter_Developer_CV.pdf',
-      );
+    // If it's a CV or asset PDF, open in new tab instead of downloading
+    if (trimmed == AppAssets.cvPdf || trimmed.endsWith('.pdf')) {
+      await downloadCv();
       return;
     }
 
@@ -64,7 +59,11 @@ abstract final class AppLinks {
     }
 
     if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
+      await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+        webOnlyWindowName: '_blank',
+      );
     }
   }
 }

@@ -245,30 +245,29 @@ void main() {
       expect(find.byType(ProjectDetailsScreen), findsOneWidget);
     });
 
-    testWidgets(
-      'External action button renders label and outward arrow',
-      (WidgetTester tester) async {
-        // Zadna Groceries has App Store action
-        final prodProject = projects.first;
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: SingleChildScrollView(
-                child: SizedBox(
-                  width: 380,
-                  child: ProjectGridCard(project: prodProject),
-                ),
+    testWidgets('External action button renders label and outward arrow', (
+      WidgetTester tester,
+    ) async {
+      // Zadna Groceries has App Store action
+      final prodProject = projects.first;
+      await tester.pumpWidget(
+        MaterialApp(
+          home: Scaffold(
+            body: SingleChildScrollView(
+              child: SizedBox(
+                width: 380,
+                child: ProjectGridCard(project: prodProject),
               ),
             ),
           ),
-        );
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 600));
+        ),
+      );
+      await tester.pump();
+      await tester.pump(const Duration(milliseconds: 600));
 
-        expect(find.text('App Store'), findsOneWidget);
-        expect(find.byIcon(Icons.arrow_outward_rounded), findsOneWidget);
-      },
-    );
+      expect(find.text('App Store'), findsOneWidget);
+      expect(find.byIcon(Icons.arrow_outward_rounded), findsOneWidget);
+    });
   });
 
   group('Responsive No-Overflow Tests across Viewports', () {

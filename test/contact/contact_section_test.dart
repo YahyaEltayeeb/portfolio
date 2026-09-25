@@ -32,9 +32,7 @@ void main() {
 
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: SingleChildScrollView(child: ContactSection()),
-          ),
+          home: Scaffold(body: SingleChildScrollView(child: ContactSection())),
         ),
       );
       await tester.pump();
@@ -80,9 +78,7 @@ void main() {
 
       await tester.pumpWidget(
         const MaterialApp(
-          home: Scaffold(
-            body: SingleChildScrollView(child: ContactSection()),
-          ),
+          home: Scaffold(body: SingleChildScrollView(child: ContactSection())),
         ),
       );
       await tester.pump();
@@ -103,30 +99,31 @@ void main() {
 
   group('ContactSection Responsive No-Overflow Tests', () {
     for (final size in testViewports) {
-      testWidgets('renders cleanly at ${size.width.toInt()}px without overflow', (
-        WidgetTester tester,
-      ) async {
-        tester.view.physicalSize = size;
-        tester.view.devicePixelRatio = 1.0;
-        addTearDown(() {
-          tester.view.resetPhysicalSize();
-          tester.view.resetDevicePixelRatio();
-        });
+      testWidgets(
+        'renders cleanly at ${size.width.toInt()}px without overflow',
+        (WidgetTester tester) async {
+          tester.view.physicalSize = size;
+          tester.view.devicePixelRatio = 1.0;
+          addTearDown(() {
+            tester.view.resetPhysicalSize();
+            tester.view.resetDevicePixelRatio();
+          });
 
-        await tester.pumpWidget(
-          const MaterialApp(
-            home: Scaffold(
-              body: SingleChildScrollView(child: ContactSection()),
+          await tester.pumpWidget(
+            const MaterialApp(
+              home: Scaffold(
+                body: SingleChildScrollView(child: ContactSection()),
+              ),
             ),
-          ),
-        );
-        await tester.pump();
-        await tester.pump(const Duration(milliseconds: 100));
+          );
+          await tester.pump();
+          await tester.pump(const Duration(milliseconds: 100));
 
-        expect(tester.takeException(), isNull);
-        expect(find.text(AppStrings.email), findsOneWidget);
-        expect(find.text(AppStrings.phone), findsOneWidget);
-      });
+          expect(tester.takeException(), isNull);
+          expect(find.text(AppStrings.email), findsOneWidget);
+          expect(find.text(AppStrings.phone), findsOneWidget);
+        },
+      );
     }
   });
 }

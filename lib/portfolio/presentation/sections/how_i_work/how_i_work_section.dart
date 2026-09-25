@@ -108,10 +108,7 @@ class HowIWorkSection extends StatelessWidget {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: const Color(0xFF0B192C),
-                  border: Border.all(
-                    color: AppColors.primaryCyan,
-                    width: 1.5,
-                  ),
+                  border: Border.all(color: AppColors.primaryCyan, width: 1.5),
                   boxShadow: [
                     BoxShadow(
                       color: AppColors.primaryCyan.withValues(alpha: 0.35),
@@ -142,9 +139,7 @@ class HowIWorkSection extends StatelessWidget {
             children: [
               for (int i = 0; i < steps.length; i++) ...[
                 if (i > 0) const SizedBox(width: 14),
-                Expanded(
-                  child: _StepCard(step: steps[i]),
-                ),
+                Expanded(child: _StepCard(step: steps[i])),
               ],
             ],
           ),
@@ -164,9 +159,7 @@ class HowIWorkSection extends StatelessWidget {
             children: [
               for (int i = 0; i < 3; i++) ...[
                 if (i > 0) const SizedBox(width: 14),
-                Expanded(
-                  child: _StepCard(step: steps[i]),
-                ),
+                Expanded(child: _StepCard(step: steps[i])),
               ],
             ],
           ),
@@ -221,11 +214,7 @@ class _StepCardState extends State<_StepCard> {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 240),
         curve: Curves.easeOutCubic,
-        transform: Matrix4.translationValues(
-          0.0,
-          _isHovered ? -4.0 : 0.0,
-          0.0,
-        ),
+        transform: Matrix4.translationValues(0.0, _isHovered ? -4.0 : 0.0, 0.0),
         padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
           color: _isHovered

@@ -23,7 +23,7 @@ abstract final class AppStrings {
       'I build scalable, production-ready mobile applications with clean, maintainable architecture and smooth user experiences.';
 
   static const String aboutDescription =
-      "Building scalable, production-ready Flutter apps with clean architecture and seamless user experiences.";
+      "Focused on clean architecture, advanced integrations, and production-grade delivery—creating reliable mobile experiences built to perform, scale, and solve real business needs.";
 
   static const String viewProjects = 'View Projects';
   static const String downloadCv = 'Download CV';

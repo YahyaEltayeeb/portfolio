@@ -44,6 +44,18 @@ class _VisibilityFadeSlideState extends State<VisibilityFadeSlide>
       begin: Offset(0, widget.verticalOffset / 100),
       end: Offset.zero,
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOutCubic));
+
+    // For top hero-section, trigger immediately so content renders without waiting for VisibilityDetector interval
+    if (widget.visibilityKey == 'hero-section') {
+      _hasTriggered = true;
+      if (widget.delay == Duration.zero) {
+        _controller.forward();
+      } else {
+        Future.delayed(widget.delay, () {
+          if (mounted) _controller.forward();
+        });
+      }
+    }
   }
 
   void _onVisibilityChanged(VisibilityInfo info) {

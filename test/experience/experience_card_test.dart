@@ -208,41 +208,56 @@ void main() {
       );
     }
 
-    testWidgets('Black Falcons card does not overflow when tags wrap to multiple lines', (WidgetTester tester) async {
-      final experience = experiences.firstWhere((e) => e.id == 'black-falcons');
-      final originalOnError = FlutterError.onError;
-      final errors = <FlutterErrorDetails>[];
-      FlutterError.onError = (details) {
-        errors.add(details);
-      };
+    testWidgets(
+      'Black Falcons card does not overflow when tags wrap to multiple lines',
+      (WidgetTester tester) async {
+        final experience = experiences.firstWhere(
+          (e) => e.id == 'black-falcons',
+        );
+        final originalOnError = FlutterError.onError;
+        final errors = <FlutterErrorDetails>[];
+        FlutterError.onError = (details) {
+          errors.add(details);
+        };
 
-      addTearDown(() {
-        FlutterError.onError = originalOnError;
-        tester.view.resetPhysicalSize();
-        tester.view.resetDevicePixelRatio();
-      });
+        addTearDown(() {
+          FlutterError.onError = originalOnError;
+          tester.view.resetPhysicalSize();
+          tester.view.resetDevicePixelRatio();
+        });
 
-      for (double width = 600; width <= 1300; width += 20) {
-        tester.view.physicalSize = Size(width, 900);
-        tester.view.devicePixelRatio = 1.0;
+        for (double width = 600; width <= 1300; width += 20) {
+          tester.view.physicalSize = Size(width, 900);
+          tester.view.devicePixelRatio = 1.0;
 
-        await tester.pumpWidget(
-          MaterialApp(
-            home: Scaffold(
-              body: SingleChildScrollView(
-                child: SizedBox(
-                  width: width,
-                  child: ExperienceCard(experience: experience, isLast: false),
+          await tester.pumpWidget(
+            MaterialApp(
+              home: Scaffold(
+                body: SingleChildScrollView(
+                  child: SizedBox(
+                    width: width,
+                    child: ExperienceCard(
+                      experience: experience,
+                      isLast: false,
+                    ),
+                  ),
                 ),
               ),
             ),
-          ),
-        );
-        await tester.pump();
-      }
+          );
+          await tester.pump();
+        }
 
-      final overflowErrors = errors.where((e) => e.toString().contains('overflowed')).toList();
-      expect(overflowErrors, isEmpty, reason: 'Found overflow errors: ${overflowErrors.map((e) => e.summary.toString()).toList()}');
-    });
+        final overflowErrors = errors
+            .where((e) => e.toString().contains('overflowed'))
+            .toList();
+        expect(
+          overflowErrors,
+          isEmpty,
+          reason:
+              'Found overflow errors: ${overflowErrors.map((e) => e.summary.toString()).toList()}',
+        );
+      },
+    );
   });
 }

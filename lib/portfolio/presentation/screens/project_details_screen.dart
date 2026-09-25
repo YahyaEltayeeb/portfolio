@@ -510,10 +510,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
               runSpacing: 10,
               children: validActions
                   .map(
-                    (action) => SmartProjectButton(
-                      action: action,
-                      isPrimary: true,
-                    ),
+                    (action) =>
+                        SmartProjectButton(action: action, isPrimary: true),
                   )
                   .toList(),
             ),

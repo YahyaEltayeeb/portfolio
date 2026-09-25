@@ -37,37 +37,37 @@ class ContactSection extends StatelessWidget {
   const ContactSection({super.key});
 
   List<_ContactItem> get _items => const [
-        _ContactItem(
-          title: 'Email',
-          valueText: AppStrings.email,
-          copyText: AppStrings.email,
-          actionUrl: AppLinks.email,
-          icon: FontAwesomeIcons.envelope,
-          actionTooltip: 'Send Email',
-        ),
-        _ContactItem(
-          title: 'Phone & WhatsApp',
-          valueText: AppStrings.phone,
-          copyText: '+201289078927',
-          actionUrl: AppLinks.whatsApp,
-          icon: FontAwesomeIcons.whatsapp,
-          actionTooltip: 'Chat on WhatsApp',
-        ),
-        _ContactItem(
-          title: 'LinkedIn',
-          valueText: AppStrings.linkedInHandle,
-          actionUrl: AppLinks.linkedIn,
-          icon: FontAwesomeIcons.linkedinIn,
-          actionTooltip: 'View LinkedIn Profile',
-        ),
-        _ContactItem(
-          title: 'GitHub',
-          valueText: AppStrings.gitHubHandle,
-          actionUrl: AppLinks.gitHub,
-          icon: FontAwesomeIcons.github,
-          actionTooltip: 'View GitHub Repositories',
-        ),
-      ];
+    _ContactItem(
+      title: 'Email',
+      valueText: AppStrings.email,
+      copyText: AppStrings.email,
+      actionUrl: AppLinks.email,
+      icon: FontAwesomeIcons.envelope,
+      actionTooltip: 'Send Email',
+    ),
+    _ContactItem(
+      title: 'Phone & WhatsApp',
+      valueText: AppStrings.phone,
+      copyText: '+201289078927',
+      actionUrl: AppLinks.whatsApp,
+      icon: FontAwesomeIcons.whatsapp,
+      actionTooltip: 'Chat on WhatsApp',
+    ),
+    _ContactItem(
+      title: 'LinkedIn',
+      valueText: AppStrings.linkedInHandle,
+      actionUrl: AppLinks.linkedIn,
+      icon: FontAwesomeIcons.linkedinIn,
+      actionTooltip: 'View LinkedIn Profile',
+    ),
+    _ContactItem(
+      title: 'GitHub',
+      valueText: AppStrings.gitHubHandle,
+      actionUrl: AppLinks.gitHub,
+      icon: FontAwesomeIcons.github,
+      actionTooltip: 'View GitHub Repositories',
+    ),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -121,9 +121,7 @@ class ContactSection extends StatelessWidget {
                       children: [
                         for (int i = 0; i < items.length; i++) ...[
                           if (i > 0) const SizedBox(width: 14),
-                          Expanded(
-                            child: _ContactCard(item: items[i]),
-                          ),
+                          Expanded(child: _ContactCard(item: items[i])),
                         ],
                       ],
                     );
@@ -374,15 +372,13 @@ class _CopyIconButtonState extends State<_CopyIconButton> {
               color: _copied
                   ? AppColors.success.withValues(alpha: 0.2)
                   : (_hovered
-                      ? AppColors.primaryCyan.withValues(alpha: 0.15)
-                      : Colors.white.withValues(alpha: 0.04)),
+                        ? AppColors.primaryCyan.withValues(alpha: 0.15)
+                        : Colors.white.withValues(alpha: 0.04)),
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
                 color: _copied
                     ? AppColors.success
-                    : (_hovered
-                        ? AppColors.primaryCyan
-                        : AppColors.border),
+                    : (_hovered ? AppColors.primaryCyan : AppColors.border),
                 width: 1,
               ),
             ),

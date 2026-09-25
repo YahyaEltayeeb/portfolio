@@ -3,6 +3,7 @@ import '../../../core/animations/routes/fade_route.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/theme/app_typography.dart';
+import '../../../core/constants/app_assets.dart';
 import 'portfolio_main_screen.dart';
 
 /// Animated splash screen featuring the "YM" monogram with cinematic transitions.
@@ -16,6 +17,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
+  bool _hasNavigated = false;
 
   // (1) Accent line expand
   late final Animation<double> _lineExpand;
@@ -42,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 3000),
+      duration: const Duration(milliseconds: 1000),
     );
 
     // (1) Line expands: 0.0 -> 0.35
@@ -53,63 +55,63 @@ class _SplashScreenState extends State<SplashScreen>
       ),
     );
 
-    // (2)(a): "Y" appears: 0.15 -> 0.45
+    // (2)(a): "Y" appears: 0.10 -> 0.40
     _letterYOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.15, 0.45, curve: Curves.easeOut),
+        curve: const Interval(0.10, 0.40, curve: Curves.easeOut),
       ),
     );
     _letterYSlide =
-        Tween<Offset>(begin: const Offset(-0.5, 0.0), end: Offset.zero).animate(
+        Tween<Offset>(begin: const Offset(-0.4, 0.0), end: Offset.zero).animate(
           CurvedAnimation(
             parent: _controller,
-            curve: const Interval(0.15, 0.45, curve: Curves.easeOutCubic),
+            curve: const Interval(0.10, 0.40, curve: Curves.easeOutCubic),
           ),
         );
 
-    // (2)(b): "M" appears: 0.25 -> 0.55
+    // (2)(b): "M" appears: 0.18 -> 0.48
     _letterMOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.25, 0.55, curve: Curves.easeOut),
+        curve: const Interval(0.18, 0.48, curve: Curves.easeOut),
       ),
     );
     _letterMSlide =
-        Tween<Offset>(begin: const Offset(0.5, 0.0), end: Offset.zero).animate(
+        Tween<Offset>(begin: const Offset(0.4, 0.0), end: Offset.zero).animate(
           CurvedAnimation(
             parent: _controller,
-            curve: const Interval(0.25, 0.55, curve: Curves.easeOutCubic),
+            curve: const Interval(0.18, 0.48, curve: Curves.easeOutCubic),
           ),
         );
 
-    // (3) Subtitle fades in: 0.50 -> 0.72
+    // (3) Subtitle fades in: 0.40 -> 0.68
     _subtitleOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.50, 0.72, curve: Curves.easeOut),
+        curve: const Interval(0.40, 0.68, curve: Curves.easeOut),
       ),
     );
 
-    // (4) Line contracts: 0.70 -> 0.85
+    // (4) Line contracts: 0.65 -> 0.82
     _lineContract = Tween<double>(begin: 1.0, end: 0.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.70, 0.85, curve: Curves.easeInCubic),
+        curve: const Interval(0.65, 0.82, curve: Curves.easeInCubic),
       ),
     );
 
-    // (5) Exit: 0.82 -> 1.0
-    _exitScale = Tween<double>(begin: 1.0, end: 0.88).animate(
+    // (5) Exit: 0.78 -> 1.0
+    _exitScale = Tween<double>(begin: 1.0, end: 0.90).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.82, 1.0, curve: Curves.easeInCubic),
+        curve: const Interval(0.78, 1.0, curve: Curves.easeInCubic),
       ),
     );
     _exitOpacity = Tween<double>(begin: 1.0, end: 0.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.85, 1.0, curve: Curves.easeIn),
+        curve: const Interval(0.80, 1.0, curve: Curves.easeIn),
       ),
     );
 
@@ -121,11 +123,21 @@ class _SplashScreenState extends State<SplashScreen>
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(const AssetImage(AppAssets.profileImage), context);
+  }
+
   void _navigateToHome() {
-    if (!mounted) return;
-    Navigator.of(
-      context,
-    ).pushReplacement(FadeRoute(page: const PortfolioMainScreen()));
+    if (!mounted || _hasNavigated) return;
+    _hasNavigated = true;
+    Navigator.of(context).pushReplacement(
+      FadeRoute(
+        page: const PortfolioMainScreen(),
+        transitionDurationCustom: const Duration(milliseconds: 250),
+      ),
+    );
   }
 
   @override
@@ -144,95 +156,99 @@ class _SplashScreenState extends State<SplashScreen>
 
     return Scaffold(
       backgroundColor: AppColors.background,
-      body: AnimatedBuilder(
-        animation: _controller,
-        builder: (context, _) {
-          final double lineProgress = _lineExpand.value * _lineContract.value;
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: _navigateToHome,
+        child: AnimatedBuilder(
+          animation: _controller,
+          builder: (context, _) {
+            final double lineProgress = _lineExpand.value * _lineContract.value;
 
-          return FadeTransition(
-            opacity: _exitOpacity,
-            child: ScaleTransition(
-              scale: _exitScale,
-              child: Center(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    // Monogram "YM"
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
-                      children: [
-                        SlideTransition(
-                          position: _letterYSlide,
-                          child: FadeTransition(
-                            opacity: _letterYOpacity,
-                            child: Text(
-                              'Y',
-                              style: AppTypography.heading(
-                                fontSize: logoFontSize,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.primaryText,
-                                height: 1.0,
+            return FadeTransition(
+              opacity: _exitOpacity,
+              child: ScaleTransition(
+                scale: _exitScale,
+                child: Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      // Monogram "YM"
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.baseline,
+                        textBaseline: TextBaseline.alphabetic,
+                        children: [
+                          SlideTransition(
+                            position: _letterYSlide,
+                            child: FadeTransition(
+                              opacity: _letterYOpacity,
+                              child: Text(
+                                'Y',
+                                style: AppTypography.heading(
+                                  fontSize: logoFontSize,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.primaryText,
+                                  height: 1.0,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        SlideTransition(
-                          position: _letterMSlide,
-                          child: FadeTransition(
-                            opacity: _letterMOpacity,
-                            child: Text(
-                              'M',
-                              style: AppTypography.heading(
-                                fontSize: logoFontSize,
-                                fontWeight: FontWeight.w800,
-                                color: AppColors.primaryCyan,
-                                height: 1.0,
+                          SlideTransition(
+                            position: _letterMSlide,
+                            child: FadeTransition(
+                              opacity: _letterMOpacity,
+                              child: Text(
+                                'M',
+                                style: AppTypography.heading(
+                                  fontSize: logoFontSize,
+                                  fontWeight: FontWeight.w800,
+                                  color: AppColors.primaryCyan,
+                                  height: 1.0,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-
-                    // Accent cyan line
-                    Container(
-                      width: lineMaxWidth * lineProgress,
-                      height: 2.5,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          colors: [
-                            AppColors.primaryCyan.withValues(alpha: 0.0),
-                            AppColors.primaryCyan,
-                            AppColors.primaryCyan.withValues(alpha: 0.0),
-                          ],
-                        ),
-                        borderRadius: BorderRadius.circular(2),
+                        ],
                       ),
-                    ),
-                    const SizedBox(height: 18),
+                      const SizedBox(height: 16),
 
-                    // Subtitle "YAHYA MOHAMED"
-                    FadeTransition(
-                      opacity: _subtitleOpacity,
-                      child: Text(
-                        AppStrings.name.toUpperCase(),
-                        style: AppTypography.heading(
-                          fontSize: subtitleFontSize,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: 8,
-                          color: AppColors.secondaryText,
+                      // Accent cyan line
+                      Container(
+                        width: lineMaxWidth * lineProgress,
+                        height: 2.5,
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              AppColors.primaryCyan.withValues(alpha: 0.0),
+                              AppColors.primaryCyan,
+                              AppColors.primaryCyan.withValues(alpha: 0.0),
+                            ],
+                          ),
+                          borderRadius: BorderRadius.circular(2),
                         ),
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 18),
+
+                      // Subtitle "YAHYA MOHAMED"
+                      FadeTransition(
+                        opacity: _subtitleOpacity,
+                        child: Text(
+                          AppStrings.name.toUpperCase(),
+                          style: AppTypography.heading(
+                            fontSize: subtitleFontSize,
+                            fontWeight: FontWeight.w500,
+                            letterSpacing: 8,
+                            color: AppColors.secondaryText,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

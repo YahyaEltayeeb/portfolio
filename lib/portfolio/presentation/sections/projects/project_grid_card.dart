@@ -371,8 +371,6 @@ class _ProjectGridCardState extends State<ProjectGridCard>
                     );
                   },
                 ),
-
-
             ],
           ),
         ),
@@ -546,10 +544,7 @@ class _ExternalActionIconButtonState extends State<_ExternalActionIconButton> {
           onTap: widget.onLaunch,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.symmetric(
-              horizontal: 12,
-              vertical: 7,
-            ),
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
             decoration: BoxDecoration(
               color: _isHovered
                   ? AppColors.primaryCyan.withValues(alpha: 0.16)
@@ -585,9 +580,7 @@ class _ExternalActionIconButtonState extends State<_ExternalActionIconButton> {
                 const SizedBox(width: 4),
                 AnimatedSlide(
                   duration: const Duration(milliseconds: 200),
-                  offset: _isHovered
-                      ? const Offset(0.12, -0.12)
-                      : Offset.zero,
+                  offset: _isHovered ? const Offset(0.12, -0.12) : Offset.zero,
                   child: Icon(
                     Icons.arrow_outward_rounded,
                     size: 14,

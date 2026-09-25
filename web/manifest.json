@@ -1,11 +1,11 @@
 {
-    "name": "portfolio",
-    "short_name": "portfolio",
+    "name": "Yahya Mohamed | Flutter Developer",
+    "short_name": "Yahya Mohamed",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#0B192C",
+    "theme_color": "#00E5FF",
+    "description": "Personal portfolio of Yahya Mohamed - Flutter Developer with 2+ years of experience building high-performance mobile applications.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

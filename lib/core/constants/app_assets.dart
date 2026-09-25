@@ -4,7 +4,7 @@ abstract final class AppAssets {
   static const String cvPdf = 'assets/docs/yahya_mohamed_cv.pdf';
 
   // Branding & Identity
-  static const String profileImage = 'assets/images/profile.webp';
+  static const String profileImage = 'assets/images/profile.png';
   static const String logo = 'assets/images/logo.webp';
 
   // Project Covers (using existing PNG assets directly)

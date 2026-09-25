@@ -144,9 +144,7 @@ void main() {
       final whatsApp = links.firstWhere(
         (l) => l.platform == SocialPlatform.whatsApp,
       );
-      final email = links.firstWhere(
-        (l) => l.platform == SocialPlatform.email,
-      );
+      final email = links.firstWhere((l) => l.platform == SocialPlatform.email);
 
       expect(
         linkedIn.url,

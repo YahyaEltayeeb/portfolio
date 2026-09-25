@@ -20,7 +20,7 @@ void main() {
 
   group('Hero Portrait Presentation & Focus Tests', () {
     testWidgets(
-      'renders close-up portrait with BoxFit.cover, semantics, and bottom caption',
+      'renders layered glass portrait with uncropped silhouette, semantics, and removed caption',
       (WidgetTester tester) async {
         await tester.pumpWidget(
           MaterialApp(
@@ -36,18 +36,15 @@ void main() {
         // Verify PortraitContainer exists
         expect(find.byType(PortraitContainer), findsOneWidget);
 
-        // Verify PortfolioImage uses BoxFit.cover and upper-focused alignment
+        // Verify PortfolioImage uses BoxFit.contain for uncropped presentation
         final imageFinder = find.byType(PortfolioImage);
         expect(imageFinder, findsWidgets);
 
         final profileImageWidget = tester.widget<PortfolioImage>(
           imageFinder.first,
         );
-        expect(profileImageWidget.fit, equals(BoxFit.cover));
-        expect(
-          profileImageWidget.alignment,
-          equals(const Alignment(0.0, -0.6)),
-        );
+        expect(profileImageWidget.fit, equals(BoxFit.contain));
+        expect(profileImageWidget.alignment, equals(Alignment.center));
 
         // Verify Semantics label
         final semanticsFinder = find.byWidgetPredicate(
@@ -58,10 +55,10 @@ void main() {
         );
         expect(semanticsFinder, findsOneWidget);
 
-        // Verify caption under the portrait
+        // Verify caption under the portrait is removed
         expect(
           find.text('Flutter Developer • Available for Opportunities'),
-          findsOneWidget,
+          findsNothing,
         );
       },
     );
