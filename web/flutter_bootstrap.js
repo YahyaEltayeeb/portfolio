@@ -14,7 +14,7 @@ _flutter.loader.load({
         if (loader.parentNode) {
           loader.parentNode.removeChild(loader);
         }
-      }, 400);
+      }, 250);
     }
   }
 });

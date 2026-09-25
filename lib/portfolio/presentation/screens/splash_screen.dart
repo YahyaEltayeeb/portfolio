@@ -44,7 +44,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1000),
+      duration: const Duration(milliseconds: 200),
     );
 
     // (1) Line expands: 0.0 -> 0.35
@@ -135,7 +135,7 @@ class _SplashScreenState extends State<SplashScreen>
     Navigator.of(context).pushReplacement(
       FadeRoute(
         page: const PortfolioMainScreen(),
-        transitionDurationCustom: const Duration(milliseconds: 250),
+        transitionDurationCustom: const Duration(milliseconds: 150),
       ),
     );
   }
