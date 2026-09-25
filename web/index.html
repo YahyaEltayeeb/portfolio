@@ -32,21 +32,151 @@
   <title>Yahya Mohamed | Flutter Developer</title>
   <link rel="manifest" href="manifest.json">
   <style>
+    * {
+      box-sizing: border-box;
+    }
     body {
       margin: 0;
-      background-color: #0A192F;
+      background-color: #07111F;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    #app-splash-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #07111F;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 999999;
+      opacity: 1;
+      visibility: visible;
+      transition: opacity 0.4s ease-out, visibility 0.4s ease-out;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #app-splash-loader.fade-out {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .monogram-container {
+      display: flex;
+      align-items: baseline;
+      justify-content: center;
+      line-height: 1;
+    }
+
+    .letter-y {
+      font-size: clamp(64px, 12vw, 96px);
+      font-weight: 800;
+      color: #F4F8FC;
+      letter-spacing: -2px;
+    }
+
+    .letter-m {
+      font-size: clamp(64px, 12vw, 96px);
+      font-weight: 800;
+      color: #18B6F6;
+      letter-spacing: -2px;
+      text-shadow: 0 0 30px rgba(24, 182, 246, 0.45);
+    }
+
+    .cyan-accent-line {
+      width: clamp(120px, 18vw, 160px);
+      height: 2.5px;
+      margin-top: 14px;
+      border-radius: 2px;
+      background: linear-gradient(90deg, rgba(24, 182, 246, 0) 0%, #18B6F6 50%, rgba(24, 182, 246, 0) 100%);
+      animation: pulseGlow 2s ease-in-out infinite;
+    }
+
+    .brand-subtitle {
+      margin-top: 18px;
+      margin-left: 8px;
+      font-size: clamp(11px, 2vw, 13px);
+      font-weight: 500;
+      letter-spacing: 8px;
+      color: #91A4B7;
+      text-transform: uppercase;
+    }
+
+    .progress-track {
+      margin-top: 28px;
+      width: 120px;
+      height: 2.5px;
+      background: rgba(33, 54, 75, 0.6);
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 45%;
+      background: linear-gradient(90deg, transparent, #18B6F6, #38CFFF, transparent);
+      border-radius: 4px;
+      animation: loadingSlide 1.4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% {
+        opacity: 0.6;
+        transform: scaleX(0.92);
+      }
+      50% {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+    }
+
+    @keyframes loadingSlide {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(250%);
+      }
     }
   </style>
 </head>
 <body>
-  <!--
-    You can customize the "flutter_bootstrap.js" script.
-    This is useful to provide a custom configuration to the Flutter loader
-    or to give the user feedback during the initialization process.
+  <!-- Instant Native Web Splash Screen -->
+  <div id="app-splash-loader">
+    <div class="monogram-container">
+      <span class="letter-y">Y</span>
+      <span class="letter-m">M</span>
+    </div>
+    <div class="cyan-accent-line"></div>
+    <div class="brand-subtitle">YAHYA MOHAMED</div>
+    <div class="progress-track">
+      <div class="progress-fill"></div>
+    </div>
+  </div>
 
-    For more details:
-    * https://docs.flutter.dev/platform-integration/web/initialization
-  -->
+  <script>
+    // Fallback safety to remove the splash screen on first frame
+    window.addEventListener('flutter-first-frame', function() {
+      var loader = document.getElementById('app-splash-loader');
+      if (loader && !loader.classList.contains('fade-out')) {
+        loader.classList.add('fade-out');
+        setTimeout(function() {
+          if (loader.parentNode) loader.parentNode.removeChild(loader);
+        }, 400);
+      }
+    });
+  </script>
+
   <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
