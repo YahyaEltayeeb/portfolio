@@ -61,9 +61,9 @@ void main() {
       }
     });
 
-    test('all projects have cover.png as coverAsset', () {
+    test('all projects have cover.webp as coverAsset', () {
       for (final p in projects) {
-        expect(p.coverAsset.endsWith('/cover.png'), isTrue);
+        expect(p.coverAsset.endsWith('/cover.webp'), isTrue);
         expect(
           File(p.coverAsset).existsSync(),
           isTrue,

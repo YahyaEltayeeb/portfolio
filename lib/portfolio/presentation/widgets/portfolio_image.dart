@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../../core/constants/app_colors.dart';
 
-/// A robust image widget for assets with loading progress and error fallback.
+/// A high-performance, robust image widget for assets with lazy frame building,
+/// lightweight skeleton placeholder, error fallback, and RepaintBoundary isolation.
 ///
-/// Prevents missing or malformed assets from throwing unhandled exceptions or
-/// breaking the layout.
+/// Prevents unnecessary repaints on web viewports and provides a smooth loading
+/// experience without blocking layout.
 class PortfolioImage extends StatelessWidget {
   final String assetPath;
   final BoxFit fit;
@@ -35,20 +36,10 @@ class PortfolioImage extends StatelessWidget {
         if (wasSynchronouslyLoaded || frame != null) {
           return child;
         }
-        return Container(
+        return _ImageSkeleton(
           width: width,
           height: height,
-          color: AppColors.card,
-          child: const Center(
-            child: SizedBox(
-              width: 24,
-              height: 24,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: AppColors.primaryCyan,
-              ),
-            ),
-          ),
+          borderRadius: borderRadius,
         );
       },
       errorBuilder: (context, error, stackTrace) {
@@ -65,10 +56,10 @@ class PortfolioImage extends StatelessWidget {
             children: [
               Icon(
                 Icons.image_not_supported_outlined,
-                size: 36,
+                size: 32,
                 color: AppColors.secondaryText.withValues(alpha: 0.5),
               ),
-              const SizedBox(height: 8),
+              const SizedBox(height: 6),
               Text(
                 'Image unavailable',
                 style: TextStyle(
@@ -86,6 +77,88 @@ class PortfolioImage extends StatelessWidget {
       imageWidget = ClipRRect(borderRadius: borderRadius!, child: imageWidget);
     }
 
-    return imageWidget;
+    // Isolate rasterized image layers with RepaintBoundary for optimal Web scrolling performance
+    return RepaintBoundary(child: imageWidget);
+  }
+}
+
+/// A lightweight skeleton placeholder with subtle pulse while asset decodes.
+class _ImageSkeleton extends StatefulWidget {
+  final double? width;
+  final double? height;
+  final BorderRadius? borderRadius;
+
+  const _ImageSkeleton({this.width, this.height, this.borderRadius});
+
+  @override
+  State<_ImageSkeleton> createState() => _ImageSkeletonState();
+}
+
+class _ImageSkeletonState extends State<_ImageSkeleton>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller;
+  late final Animation<double> _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    )..repeat(reverse: true);
+    _animation = Tween<double>(
+      begin: 0.04,
+      end: 0.12,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RepaintBoundary(
+      child: AnimatedBuilder(
+        animation: _animation,
+        builder: (context, child) {
+          return Container(
+            width: widget.width,
+            height: widget.height,
+            decoration: BoxDecoration(
+              color: AppColors.card,
+              borderRadius: widget.borderRadius ?? BorderRadius.zero,
+              border: Border.all(
+                color: AppColors.border.withValues(alpha: 0.6),
+              ),
+            ),
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                // Subtle shimmer highlight
+                ColoredBox(
+                  color: AppColors.primaryCyan.withValues(
+                    alpha: _animation.value,
+                  ),
+                ),
+                child!,
+              ],
+            ),
+          );
+        },
+        child: const Center(
+          child: SizedBox(
+            width: 22,
+            height: 22,
+            child: CircularProgressIndicator(
+              strokeWidth: 2,
+              color: AppColors.primaryCyan,
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

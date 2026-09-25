@@ -4,20 +4,20 @@ abstract final class AppAssets {
   static const String cvPdf = 'assets/docs/yahya_mohamed_cv.pdf';
 
   // Branding & Identity
-  static const String profileImage = 'assets/images/profile.png';
+  static const String profileImage = 'assets/images/profile.webp';
   static const String logo = 'assets/images/logo.webp';
 
-  // Project Covers (using existing PNG assets directly)
+  // Project Covers (using optimized WebP assets directly)
   static const String zadnaGroceriesCover =
-      'assets/images/projects/zadna_groceries/cover.png';
+      'assets/images/projects/zadna_groceries/cover.webp';
   static const String zadnaDeliveryCover =
-      'assets/images/projects/zadna_delivery/cover.png';
+      'assets/images/projects/zadna_delivery/cover.webp';
   static const String superFitnessCover =
-      'assets/images/projects/super_fitness/cover.png';
+      'assets/images/projects/super_fitness/cover.webp';
   static const String floweryEcommerceCover =
-      'assets/images/projects/flowery_ecommerce/cover.png';
+      'assets/images/projects/flowery_ecommerce/cover.webp';
   static const String floweryTrackingCover =
-      'assets/images/projects/flowery_tracking/cover.png';
+      'assets/images/projects/flowery_tracking/cover.webp';
   static const String examAppCover =
-      'assets/images/projects/exam_app/cover.png';
+      'assets/images/projects/exam_app/cover.webp';
 }
