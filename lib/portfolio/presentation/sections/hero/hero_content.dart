@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
-import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_links.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../../core/utils/spacing.dart';
@@ -26,48 +25,48 @@ class HeroContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         // Availability / Tagline Badge
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-          decoration: BoxDecoration(
-            color: AppColors.primaryCyan.withValues(alpha: 0.1),
-            borderRadius: BorderRadius.circular(20),
-            border: Border.all(
-              color: AppColors.primaryCyan.withValues(alpha: 0.35),
-            ),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: 8,
-                height: 8,
-                decoration: const BoxDecoration(
-                  color: AppColors.success,
-                  shape: BoxShape.circle,
-                ),
-              ),
-              const SizedBox(width: 8),
-              Flexible(
-                child: Text(
-                  AppStrings.heroTagline,
-                  style: GoogleFonts.outfit(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primaryCyan,
-                    letterSpacing: 0.2,
-                  ),
-                  textAlign: isMobile ? TextAlign.center : TextAlign.start,
-                ),
-              ),
-            ],
-          ),
-        ),
-        verticalSpace(16),
+        // Container(
+        //   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+        //   decoration: BoxDecoration(
+        //     color: AppColors.primaryCyan.withValues(alpha: 0.1),
+        //     borderRadius: BorderRadius.circular(20),
+        //     border: Border.all(
+        //       color: AppColors.primaryCyan.withValues(alpha: 0.35),
+        //     ),
+        //   ),
+        //   child: Row(
+        //     mainAxisSize: MainAxisSize.min,
+        //     children: [
+        //       Container(
+        //         width: 8,
+        //         height: 8,
+        //         decoration: const BoxDecoration(
+        //           color: AppColors.success,
+        //           shape: BoxShape.circle,
+        //         ),
+        //       ),
+        //       const SizedBox(width: 8),
+        //       Flexible(
+        //         child: Text(
+        //           AppStrings.heroTagline,
+        //           style: AppTypography.heading(
+        //             fontSize: 12,
+        //             fontWeight: FontWeight.w600,
+        //             color: AppColors.primaryCyan,
+        //             letterSpacing: 0.2,
+        //           ),
+        //           textAlign: isMobile ? TextAlign.center : TextAlign.start,
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        // verticalSpace(16),
 
         // Greeting
         Text(
           AppStrings.greeting,
-          style: GoogleFonts.poppins(
+          style: AppTypography.heading(
             fontSize: isMobile ? 18 : 22,
             fontWeight: FontWeight.w400,
             color: AppColors.secondaryText,
@@ -78,7 +77,7 @@ class HeroContent extends StatelessWidget {
         // Name
         Text(
           AppStrings.name,
-          style: GoogleFonts.poppins(
+          style: AppTypography.heading(
             fontSize: isMobile ? 36 : 52,
             fontWeight: FontWeight.w800,
             color: AppColors.primaryText,
@@ -96,7 +95,7 @@ class HeroContent extends StatelessWidget {
           ).createShader(bounds),
           child: Text(
             AppStrings.title,
-            style: GoogleFonts.poppins(
+            style: AppTypography.heading(
               fontSize: isMobile ? 24 : 32,
               fontWeight: FontWeight.bold,
               color: Colors.white,
@@ -109,7 +108,7 @@ class HeroContent extends StatelessWidget {
         // Bio Description
         Text(
           AppStrings.aboutDescription,
-          style: GoogleFonts.outfit(
+          style: AppTypography.body(
             fontSize: isMobile ? 14 : 15,
             color: AppColors.secondaryText,
             height: 1.6,
@@ -150,7 +149,7 @@ class HeroContent extends StatelessWidget {
                     children: [
                       Text(
                         AppStrings.viewProjects,
-                        style: GoogleFonts.poppins(
+                        style: AppTypography.heading(
                           fontSize: 15,
                           fontWeight: FontWeight.w700,
                           color: AppColors.background,
@@ -172,7 +171,7 @@ class HeroContent extends StatelessWidget {
             MouseRegion(
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
-                onTap: () => AppLinks.openUrl(AppAssets.cvPdf),
+                onTap: () => AppLinks.downloadCv(),
                 child: Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 26,
@@ -197,7 +196,7 @@ class HeroContent extends StatelessWidget {
                       const SizedBox(width: 8),
                       Text(
                         AppStrings.downloadCv,
-                        style: GoogleFonts.poppins(
+                        style: AppTypography.heading(
                           fontSize: 15,
                           fontWeight: FontWeight.w600,
                           color: AppColors.primaryCyan,

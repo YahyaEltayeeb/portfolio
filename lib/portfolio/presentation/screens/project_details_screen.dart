@@ -96,17 +96,17 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                         _buildHeader(isMobile, validActions),
                         verticalSpace(32),
 
-                        // Large Cover Image
-                        _buildCover(),
+                        // Balanced Hero Cover Image (max height 400px desktop, 240px mobile)
+                        _buildCover(isMobile),
                         verticalSpace(40),
 
                         // Overview & Two-Column Layout (Desktop) or Stacked (Mobile)
                         LayoutBuilder(
                           builder: (context, constraints) {
                             if (constraints.maxWidth < 960) {
-                              return _buildMobileContent();
+                              return _buildMobileContent(validActions);
                             }
-                            return _buildDesktopContent();
+                            return _buildDesktopContent(validActions);
                           },
                         ),
                         verticalSpace(48),
@@ -165,57 +165,87 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
   }
 
   Widget _buildHeader(bool isMobile, List<ProjectAction> validActions) {
-    return Column(
+    return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Wrap(
-          spacing: 12,
-          runSpacing: 8,
-          crossAxisAlignment: WrapCrossAlignment.center,
-          children: [
-            Text(
-              widget.project.title,
-              style: TextStyle(
-                fontSize: isMobile ? 24 : 36,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryText,
-              ),
-            ),
-            if (widget.project.isProduction)
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 5,
-                ),
-                decoration: BoxDecoration(
-                  color: AppColors.success.withValues(alpha: 0.15),
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: AppColors.success),
-                ),
-                child: const Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(
-                      Icons.check_circle_rounded,
-                      size: 14,
-                      color: AppColors.success,
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Wrap(
+                spacing: 12,
+                runSpacing: 8,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  Text(
+                    widget.project.title,
+                    style: TextStyle(
+                      fontSize: isMobile ? 26 : 38,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryText,
+                      letterSpacing: -0.5,
                     ),
-                    SizedBox(width: 6),
-                    Text(
-                      AppStrings.liveAppBadge,
-                      style: TextStyle(
-                        color: AppColors.success,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold,
+                  ),
+                  if (widget.project.isProduction)
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 5,
+                      ),
+                      decoration: BoxDecoration(
+                        color: AppColors.success.withValues(alpha: 0.15),
+                        borderRadius: BorderRadius.circular(16),
+                        border: Border.all(color: AppColors.success),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Icon(
+                            Icons.check_circle_rounded,
+                            size: 14,
+                            color: AppColors.success,
+                          ),
+                          SizedBox(width: 6),
+                          Text(
+                            AppStrings.liveAppBadge,
+                            style: TextStyle(
+                              color: AppColors.success,
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                widget.project.shortDescription,
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: AppColors.secondaryText,
+                  height: 1.5,
                 ),
               ),
-          ],
+              if (isMobile && validActions.isNotEmpty) ...[
+                verticalSpace(16),
+                Wrap(
+                  spacing: 12,
+                  runSpacing: 10,
+                  children: validActions
+                      .map(
+                        (action) =>
+                            SmartProjectButton(action: action, isPrimary: true),
+                      )
+                      .toList(),
+                ),
+              ],
+            ],
+          ),
         ),
-        if (validActions.isNotEmpty) ...[
-          verticalSpace(16),
+        if (!isMobile && validActions.isNotEmpty) ...[
+          const SizedBox(width: 24),
           Wrap(
             spacing: 12,
             runSpacing: 10,
@@ -231,91 +261,155 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     );
   }
 
-  Widget _buildCover() {
-    return Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.glow.withValues(alpha: 0.08),
-            blurRadius: 24,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(16),
-        child: AspectRatio(
-          aspectRatio: widget.project.coverAspectRatio,
-          child: Center(
-            child: PortfolioImage(
-              assetPath: widget.project.coverAsset,
-              fit: BoxFit.contain,
-              alignment: Alignment.center,
+  Widget _buildCover(bool isMobile) {
+    final double maxCoverHeight = isMobile ? 240.0 : 400.0;
+    final double aspectRatio = widget.project.coverAspectRatio;
+
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        // Calculate dimensions so the container tightly hugs the image width and height
+        double targetWidth = maxCoverHeight * aspectRatio;
+        double targetHeight = maxCoverHeight;
+
+        // If the calculated width exceeds available width, scale down proportionally
+        if (targetWidth > constraints.maxWidth) {
+          targetWidth = constraints.maxWidth;
+          targetHeight = targetWidth / aspectRatio;
+        }
+
+        return Center(
+          child: Container(
+            width: targetWidth,
+            height: targetHeight,
+            decoration: BoxDecoration(
+              color: const Color(0xFF08121E),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.border),
+              boxShadow: [
+                BoxShadow(
+                  color: AppColors.glow.withValues(alpha: 0.08),
+                  blurRadius: 24,
+                  offset: const Offset(0, 8),
+                ),
+              ],
+            ),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(16),
+              child: Stack(
+                fit: StackFit.expand,
+                alignment: Alignment.center,
+                children: [
+                  // Clickable cover image
+                  GestureDetector(
+                    onTap: () {
+                      FullScreenImageViewer.show(
+                        context,
+                        images: [widget.project.coverAsset],
+                        initialIndex: 0,
+                        title: '${widget.project.title} - Cover',
+                      );
+                    },
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Center(
+                        child: PortfolioImage(
+                          assetPath: widget.project.coverAsset,
+                          fit: BoxFit.contain,
+                          alignment: Alignment.center,
+                        ),
+                      ),
+                    ),
+                  ),
+
+                  // Fullscreen zoom indicator button
+                  Positioned(
+                    top: 12,
+                    right: 12,
+                    child: Tooltip(
+                      message: 'View full image',
+                      child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: GestureDetector(
+                          onTap: () {
+                            FullScreenImageViewer.show(
+                              context,
+                              images: [widget.project.coverAsset],
+                              initialIndex: 0,
+                              title: '${widget.project.title} - Cover',
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
+                              color: AppColors.card.withValues(alpha: 0.85),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: AppColors.border.withValues(alpha: 0.8),
+                              ),
+                            ),
+                            child: const Icon(
+                              Icons.fullscreen_rounded,
+                              size: 18,
+                              color: AppColors.primaryCyan,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 
-  Widget _buildDesktopContent() {
+  Widget _buildDesktopContent(List<ProjectAction> validActions) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Left Column: Overview, Role, Key Features
+        // Left Column: Overview & Key Features (62% width)
         Expanded(
-          flex: 65,
+          flex: 62,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildSectionTitle('Overview'),
-              verticalSpace(12),
-              Text(
-                widget.project.fullDescription,
-                style: const TextStyle(
-                  fontSize: 15,
-                  color: AppColors.secondaryText,
-                  height: 1.7,
-                ),
-              ),
-              verticalSpace(28),
-              _buildRole(),
-              verticalSpace(28),
-              _buildKeyFeatures(),
+              _buildOverviewCard(),
+              verticalSpace(24),
+              _buildKeyFeaturesCard(),
             ],
           ),
         ),
-        horizontalSpace(40),
-        // Right Column: Tech Stack
-        Expanded(flex: 35, child: _buildTechStack()),
+        horizontalSpace(28),
+        // Right Column: My Role, Project Links & Technologies Used (38% width)
+        Expanded(
+          flex: 38,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildRoleAndInfoCard(validActions),
+              verticalSpace(24),
+              _buildTechStackCard(),
+            ],
+          ),
+        ),
       ],
     );
   }
 
-  Widget _buildMobileContent() {
+  Widget _buildMobileContent(List<ProjectAction> validActions) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _buildSectionTitle('Overview'),
-        verticalSpace(12),
-        Text(
-          widget.project.fullDescription,
-          style: const TextStyle(
-            fontSize: 15,
-            color: AppColors.secondaryText,
-            height: 1.7,
-          ),
-        ),
-        verticalSpace(24),
-        _buildRole(),
-        verticalSpace(24),
-        _buildKeyFeatures(),
-        verticalSpace(28),
-        _buildTechStack(),
+        _buildOverviewCard(),
+        verticalSpace(20),
+        _buildRoleAndInfoCard(validActions),
+        verticalSpace(20),
+        _buildKeyFeaturesCard(),
+        verticalSpace(20),
+        _buildTechStackCard(),
       ],
     );
   }
@@ -325,14 +419,14 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
       mainAxisSize: MainAxisSize.min,
       children: [
         Container(
-          width: 3,
+          width: 3.5,
           height: 18,
           decoration: BoxDecoration(
             color: AppColors.primaryCyan,
             borderRadius: BorderRadius.circular(2),
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: 10),
         Flexible(
           child: Text(
             title,
@@ -340,6 +434,7 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
               fontSize: 18,
               fontWeight: FontWeight.bold,
               color: AppColors.primaryText,
+              letterSpacing: -0.2,
             ),
           ),
         ),
@@ -347,32 +442,26 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     );
   }
 
-  Widget _buildRole() {
+  Widget _buildOverviewCard() {
     return Container(
-      padding: const EdgeInsets.all(16),
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: AppColors.cardHover.withValues(alpha: 0.5),
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: AppColors.border),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            AppStrings.myRole,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: AppColors.primaryCyan,
-            ),
-          ),
-          const SizedBox(height: 6),
+          _buildSectionTitle('Overview'),
+          verticalSpace(14),
           Text(
-            widget.project.myRole,
+            widget.project.fullDescription,
             style: const TextStyle(
-              fontSize: 14,
-              color: AppColors.primaryText,
-              height: 1.5,
+              fontSize: 15,
+              color: AppColors.secondaryText,
+              height: 1.75,
             ),
           ),
         ],
@@ -380,48 +469,118 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
     );
   }
 
-  Widget _buildKeyFeatures() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        _buildSectionTitle(AppStrings.keyFeatures),
-        verticalSpace(12),
-        ...widget.project.keyFeatures.map(
-          (feature) => Padding(
-            padding: const EdgeInsets.only(bottom: 8),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Padding(
-                  padding: EdgeInsets.only(top: 4),
-                  child: Icon(
-                    Icons.check_circle_outline_rounded,
-                    size: 16,
-                    color: AppColors.primaryCyan,
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    feature,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      color: AppColors.secondaryText,
-                      height: 1.5,
-                    ),
-                  ),
-                ),
-              ],
+  Widget _buildRoleAndInfoCard(List<ProjectAction> validActions) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle(AppStrings.myRole),
+          verticalSpace(14),
+          Text(
+            widget.project.myRole,
+            style: const TextStyle(
+              fontSize: 14.5,
+              color: AppColors.primaryText,
+              height: 1.6,
             ),
           ),
-        ),
-      ],
+          if (validActions.isNotEmpty) ...[
+            verticalSpace(20),
+            const Divider(color: AppColors.border, height: 1),
+            verticalSpace(16),
+            const Text(
+              'Project Links',
+              style: TextStyle(
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: AppColors.secondaryText,
+                letterSpacing: 0.3,
+              ),
+            ),
+            verticalSpace(12),
+            Wrap(
+              spacing: 10,
+              runSpacing: 10,
+              children: validActions
+                  .map(
+                    (action) => SmartProjectButton(
+                      action: action,
+                      isPrimary: true,
+                    ),
+                  )
+                  .toList(),
+            ),
+          ],
+        ],
+      ),
     );
   }
 
-  Widget _buildTechStack() {
+  Widget _buildKeyFeaturesCard() {
     return Container(
-      padding: const EdgeInsets.all(20),
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          _buildSectionTitle(AppStrings.keyFeatures),
+          verticalSpace(16),
+          ...widget.project.keyFeatures.asMap().entries.map((entry) {
+            final isLast = entry.key == widget.project.keyFeatures.length - 1;
+            return Padding(
+              padding: EdgeInsets.only(bottom: isLast ? 0 : 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    margin: const EdgeInsets.only(top: 2),
+                    padding: const EdgeInsets.all(3.5),
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: AppColors.primaryCyan.withValues(alpha: 0.12),
+                    ),
+                    child: const Icon(
+                      Icons.check_rounded,
+                      size: 13,
+                      color: AppColors.primaryCyan,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Text(
+                      entry.value,
+                      style: const TextStyle(
+                        fontSize: 14.5,
+                        color: AppColors.primaryText,
+                        height: 1.5,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTechStackCard() {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: AppColors.card,
         borderRadius: BorderRadius.circular(16),
@@ -449,8 +608,8 @@ class _ProjectDetailsScreenState extends State<ProjectDetailsScreen> {
                 child: Text(
                   tech,
                   style: const TextStyle(
-                    fontSize: 12,
-                    color: AppColors.primaryText,
+                    fontSize: 12.5,
+                    color: AppColors.primaryCyan,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
@@ -577,7 +736,7 @@ class _GalleryItemCardState extends State<_GalleryItemCard> {
                 borderRadius: BorderRadius.circular(14),
                 child: PortfolioImage(
                   assetPath: widget.assetPath,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.cover,
                 ),
               ),
               if (_isHovered)

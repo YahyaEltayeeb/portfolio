@@ -25,6 +25,12 @@ class SocialLinksRepository {
         url: AppLinks.whatsApp,
         icon: SocialLinkModel.whatsAppIcon,
       ),
+      SocialLinkModel(
+        platform: SocialPlatform.email,
+        name: AppStrings.emailLabel,
+        url: AppLinks.email,
+        icon: SocialLinkModel.emailIcon,
+      ),
     ];
   }
 }

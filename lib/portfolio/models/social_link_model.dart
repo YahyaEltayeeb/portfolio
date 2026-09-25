@@ -1,6 +1,6 @@
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-enum SocialPlatform { linkedIn, gitHub, whatsApp }
+enum SocialPlatform { linkedIn, gitHub, whatsApp, email }
 
 class SocialLinkModel {
   final SocialPlatform platform;
@@ -15,6 +15,7 @@ class SocialLinkModel {
     required this.icon,
   });
 
+  static const FaIconData emailIcon = FontAwesomeIcons.envelope;
   static const FaIconData linkedInIcon = FontAwesomeIcons.linkedinIn;
   static const FaIconData gitHubIcon = FontAwesomeIcons.github;
   static const FaIconData whatsAppIcon = FontAwesomeIcons.whatsapp;

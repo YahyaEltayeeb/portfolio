@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/animations/routes/fade_route.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../models/project_model.dart';
 import '../../screens/project_details_screen.dart';
@@ -250,17 +249,30 @@ class _ProjectGridCardState extends State<ProjectGridCard>
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Short project type
-                                Text(
-                                  _getProjectType(widget.project.title),
-                                  style: GoogleFonts.outfit(
-                                    fontSize: isMobile ? 12.0 : 13.0,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppColors.primaryCyan,
-                                    letterSpacing: 0.3,
-                                  ),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                                // Header row: Project type on left + Live App Badge on right (only when live)
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Expanded(
+                                      child: Text(
+                                        _getProjectType(widget.project.title),
+                                        style: AppTypography.mono(
+                                          fontSize: isMobile ? 11.5 : 12.5,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppColors.primaryCyan,
+                                          letterSpacing: 0.3,
+                                        ),
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    ),
+                                    if (widget.project.isProduction) ...[
+                                      const SizedBox(width: 8),
+                                      _buildStatusBadge(),
+                                    ],
+                                  ],
                                 ),
                                 const SizedBox(height: 6),
 
@@ -271,7 +283,7 @@ class _ProjectGridCardState extends State<ProjectGridCard>
                                     alignment: Alignment.centerLeft,
                                     child: Text(
                                       widget.project.title,
-                                      style: GoogleFonts.poppins(
+                                      style: AppTypography.heading(
                                         fontSize: isMobile ? 17.0 : 19.0,
                                         fontWeight: FontWeight.bold,
                                         color: AppColors.primaryText,
@@ -360,8 +372,7 @@ class _ProjectGridCardState extends State<ProjectGridCard>
                   },
                 ),
 
-              // Small Status Badge ("Live App" or "GitHub")
-              Positioned(top: 12, left: 12, child: _buildStatusBadge()),
+
             ],
           ),
         ),
@@ -371,60 +382,42 @@ class _ProjectGridCardState extends State<ProjectGridCard>
 
   Widget _buildStatusBadge() {
     final bool isLive = widget.project.isProduction;
+    if (!isLive) return const SizedBox.shrink();
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
       decoration: BoxDecoration(
-        color: isLive
-            ? const Color(0xFF102820).withValues(alpha: 0.92)
-            : AppColors.card.withValues(alpha: 0.92),
+        color: const Color(0xFF102820).withValues(alpha: 0.95),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: isLive
-              ? AppColors.success.withValues(alpha: 0.7)
-              : AppColors.primaryCyan.withValues(alpha: 0.5),
+          color: AppColors.success.withValues(alpha: 0.8),
           width: 1.0,
         ),
         boxShadow: [
-          BoxShadow(color: Colors.black.withValues(alpha: 0.4), blurRadius: 6),
+          BoxShadow(
+            color: AppColors.success.withValues(alpha: 0.2),
+            blurRadius: 6,
+          ),
         ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          if (isLive) ...[
-            const Icon(
-              Icons.check_circle_rounded,
-              size: 12,
+          const Icon(
+            Icons.check_circle_rounded,
+            size: 12,
+            color: AppColors.success,
+          ),
+          const SizedBox(width: 5),
+          Text(
+            'Live App',
+            style: AppTypography.mono(
               color: AppColors.success,
+              fontSize: 11,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 0.2,
             ),
-            const SizedBox(width: 5),
-            const Text(
-              'Live App',
-              style: TextStyle(
-                color: AppColors.success,
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.2,
-              ),
-            ),
-          ] else ...[
-            const FaIcon(
-              FontAwesomeIcons.github,
-              size: 11,
-              color: AppColors.primaryCyan,
-            ),
-            const SizedBox(width: 5),
-            const Text(
-              'GitHub',
-              style: TextStyle(
-                color: AppColors.primaryCyan,
-                fontSize: 11,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.2,
-              ),
-            ),
-          ],
+          ),
         ],
       ),
     );
@@ -440,76 +433,90 @@ class _ProjectGridCardState extends State<ProjectGridCard>
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         // "View Project" Button
-        AnimatedBuilder(
-          animation: _hoverAnimation,
-          builder: (context, child) {
-            final double arrowShift = isMobile
-                ? 0.0
-                : (4.0 * _hoverAnimation.value);
+        Flexible(
+          child: FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: AnimatedBuilder(
+              animation: _hoverAnimation,
+              builder: (context, child) {
+                final double arrowShift = isMobile
+                    ? 0.0
+                    : (4.0 * _hoverAnimation.value);
 
-            return GestureDetector(
-              behavior: HitTestBehavior.opaque,
-              onTap: () => _openDetails(context),
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 7,
-                ),
-                decoration: BoxDecoration(
-                  color: _isHovered
-                      ? AppColors.primaryCyan.withValues(alpha: 0.16)
-                      : AppColors.cardHover.withValues(alpha: 0.6),
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                    color: _isHovered
-                        ? AppColors.primaryCyan.withValues(alpha: 0.7)
-                        : AppColors.border,
-                    width: 1.0,
+                return GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  onTap: () => _openDetails(context),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 7,
+                    ),
+                    decoration: BoxDecoration(
+                      color: _isHovered
+                          ? AppColors.primaryCyan.withValues(alpha: 0.16)
+                          : AppColors.cardHover.withValues(alpha: 0.6),
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: _isHovered
+                            ? AppColors.primaryCyan.withValues(alpha: 0.7)
+                            : AppColors.border,
+                        width: 1.0,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'View Project',
+                          style: AppTypography.heading(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w600,
+                            color: _isHovered
+                                ? AppColors.primaryCyan
+                                : AppColors.primaryText,
+                          ),
+                        ),
+                        const SizedBox(width: 5),
+                        Transform.translate(
+                          offset: Offset(arrowShift, 0),
+                          child: Icon(
+                            Icons.arrow_forward_rounded,
+                            size: 14,
+                            color: _isHovered
+                                ? AppColors.primaryCyan
+                                : AppColors.secondaryText,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'View Project',
-                      style: GoogleFonts.outfit(
-                        fontSize: 12.5,
-                        fontWeight: FontWeight.w600,
-                        color: _isHovered
-                            ? AppColors.primaryCyan
-                            : AppColors.primaryText,
-                      ),
-                    ),
-                    const SizedBox(width: 5),
-                    Transform.translate(
-                      offset: Offset(arrowShift, 0),
-                      child: Icon(
-                        Icons.arrow_forward_rounded,
-                        size: 14,
-                        color: _isHovered
-                            ? AppColors.primaryCyan
-                            : AppColors.secondaryText,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            );
-          },
+                );
+              },
+            ),
+          ),
         ),
 
-        // Small External Action Icon (App Store / GitHub)
-        if (primaryAction != null && primaryAction.url.isNotEmpty)
-          _ExternalActionIconButton(
-            action: primaryAction,
-            onLaunch: () => _launchExternalUrl(primaryAction.url),
+        // External Action Button (App Store / GitHub)
+        if (primaryAction != null && primaryAction.url.isNotEmpty) ...[
+          const SizedBox(width: 8),
+          Flexible(
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              alignment: Alignment.centerRight,
+              child: _ExternalActionIconButton(
+                action: primaryAction,
+                onLaunch: () => _launchExternalUrl(primaryAction.url),
+              ),
+            ),
           ),
+        ],
       ],
     );
   }
 }
 
-/// Small circular external action icon button that stops tap propagation to the card.
+/// External action button (App Store / GitHub) with label and outward diagonal arrow.
 class _ExternalActionIconButton extends StatefulWidget {
   final ProjectAction action;
   final VoidCallback onLaunch;
@@ -539,26 +546,57 @@ class _ExternalActionIconButtonState extends State<_ExternalActionIconButton> {
           onTap: widget.onLaunch,
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),
-            width: 34,
-            height: 34,
+            padding: const EdgeInsets.symmetric(
+              horizontal: 12,
+              vertical: 7,
+            ),
             decoration: BoxDecoration(
-              shape: BoxShape.circle,
               color: _isHovered
-                  ? AppColors.primaryCyan.withValues(alpha: 0.2)
-                  : AppColors.cardHover.withValues(alpha: 0.8),
+                  ? AppColors.primaryCyan.withValues(alpha: 0.16)
+                  : AppColors.cardHover.withValues(alpha: 0.6),
+              borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                color: _isHovered ? AppColors.primaryCyan : AppColors.border,
+                color: _isHovered
+                    ? AppColors.primaryCyan.withValues(alpha: 0.7)
+                    : AppColors.border,
                 width: 1.0,
               ),
+              boxShadow: [
+                if (_isHovered)
+                  BoxShadow(
+                    color: AppColors.primaryCyan.withValues(alpha: 0.25),
+                    blurRadius: 10,
+                  ),
+              ],
             ),
-            child: Center(
-              child: FaIcon(
-                widget.action.icon,
-                size: 14,
-                color: _isHovered
-                    ? AppColors.primaryCyan
-                    : AppColors.secondaryText,
-              ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  widget.action.label,
+                  style: AppTypography.heading(
+                    fontSize: 12.5,
+                    fontWeight: FontWeight.w600,
+                    color: _isHovered
+                        ? AppColors.primaryCyan
+                        : AppColors.primaryText,
+                  ),
+                ),
+                const SizedBox(width: 4),
+                AnimatedSlide(
+                  duration: const Duration(milliseconds: 200),
+                  offset: _isHovered
+                      ? const Offset(0.12, -0.12)
+                      : Offset.zero,
+                  child: Icon(
+                    Icons.arrow_outward_rounded,
+                    size: 14,
+                    color: _isHovered
+                        ? AppColors.primaryCyan
+                        : AppColors.secondaryText,
+                  ),
+                ),
+              ],
             ),
           ),
         ),

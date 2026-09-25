@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../core/animations/routes/fade_route.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_strings.dart';
+import '../../../core/theme/app_typography.dart';
 import 'portfolio_main_screen.dart';
 
 /// Animated splash screen featuring the "YM" monogram with cinematic transitions.
@@ -169,7 +169,7 @@ class _SplashScreenState extends State<SplashScreen>
                             opacity: _letterYOpacity,
                             child: Text(
                               'Y',
-                              style: GoogleFonts.poppins(
+                              style: AppTypography.heading(
                                 fontSize: logoFontSize,
                                 fontWeight: FontWeight.w800,
                                 color: AppColors.primaryText,
@@ -184,7 +184,7 @@ class _SplashScreenState extends State<SplashScreen>
                             opacity: _letterMOpacity,
                             child: Text(
                               'M',
-                              style: GoogleFonts.poppins(
+                              style: AppTypography.heading(
                                 fontSize: logoFontSize,
                                 fontWeight: FontWeight.w800,
                                 color: AppColors.primaryCyan,
@@ -219,9 +219,9 @@ class _SplashScreenState extends State<SplashScreen>
                       opacity: _subtitleOpacity,
                       child: Text(
                         AppStrings.name.toUpperCase(),
-                        style: GoogleFonts.outfit(
+                        style: AppTypography.heading(
                           fontSize: subtitleFontSize,
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w500,
                           letterSpacing: 8,
                           color: AppColors.secondaryText,
                         ),

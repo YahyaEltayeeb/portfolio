@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/animations/transitions/visibility_fade_slide.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../repositories/projects_repository.dart';
 import 'project_grid_card.dart';
@@ -34,7 +34,7 @@ class ProjectsSection extends StatelessWidget {
               // Section Header
               Text(
                 AppStrings.projectsTitle,
-                style: GoogleFonts.poppins(
+                style: AppTypography.heading(
                   fontSize: isMobile ? 26 : 36,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryText,
@@ -47,7 +47,7 @@ class ProjectsSection extends StatelessWidget {
                 constraints: const BoxConstraints(maxWidth: 680),
                 child: Text(
                   AppStrings.projectsSubtitle,
-                  style: GoogleFonts.outfit(
+                  style: AppTypography.body(
                     fontSize: isMobile ? 14 : 16,
                     color: AppColors.secondaryText,
                     height: 1.5,

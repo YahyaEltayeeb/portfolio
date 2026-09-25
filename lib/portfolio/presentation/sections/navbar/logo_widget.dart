@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/theme/app_typography.dart';
 
 /// Stylized "YM" monogram badge with cyan accent.
 class LogoWidget extends StatefulWidget {
@@ -53,7 +53,7 @@ class _LogoWidgetState extends State<LogoWidget> {
             children: [
               Text(
                 'Y',
-                style: GoogleFonts.poppins(
+                style: AppTypography.heading(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
                   color: AppColors.primaryText,
@@ -62,7 +62,7 @@ class _LogoWidgetState extends State<LogoWidget> {
               ),
               Text(
                 'M',
-                style: GoogleFonts.poppins(
+                style: AppTypography.heading(
                   fontSize: 20,
                   fontWeight: FontWeight.w800,
                   color: AppColors.primaryCyan,

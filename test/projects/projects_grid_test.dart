@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:portfolio/portfolio/presentation/screens/project_details_screen.dart';
 import 'package:portfolio/portfolio/presentation/sections/projects/project_grid_card.dart';
 import 'package:portfolio/portfolio/presentation/sections/projects/projects_section.dart';
@@ -53,8 +52,9 @@ void main() {
       expect(find.text('Delivery Tracking Application'), findsOneWidget);
       expect(find.text('Quiz & Examination Application'), findsOneWidget);
 
-      // Status badges: 2 "Live App", 4 "GitHub"
+      // Status badge: Only 2 live production apps have the "Live App" badge
       expect(find.text('Live App'), findsNWidgets(2));
+      expect(find.text('App Store'), findsNWidgets(2));
       expect(find.text('GitHub'), findsNWidgets(4));
 
       // Every card has a "View Project" button
@@ -246,7 +246,7 @@ void main() {
     });
 
     testWidgets(
-      'External action button renders correct icon for store / GitHub',
+      'External action button renders label and outward arrow',
       (WidgetTester tester) async {
         // Zadna Groceries has App Store action
         final prodProject = projects.first;
@@ -265,14 +265,8 @@ void main() {
         await tester.pump();
         await tester.pump(const Duration(milliseconds: 600));
 
-        expect(
-          find.byWidgetPredicate(
-            (w) =>
-                w is FaIcon &&
-                w.icon?.codePoint == FontAwesomeIcons.appStoreIos.codePoint,
-          ),
-          findsOneWidget,
-        );
+        expect(find.text('App Store'), findsOneWidget);
+        expect(find.byIcon(Icons.arrow_outward_rounded), findsOneWidget);
       },
     );
   });

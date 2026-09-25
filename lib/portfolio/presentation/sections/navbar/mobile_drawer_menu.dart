@@ -1,9 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_links.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../../core/constants/app_strings.dart';
 import '../../../repositories/social_links_repository.dart';
 import 'logo_widget.dart';
@@ -134,7 +134,7 @@ class MobileDrawerMenu extends StatelessWidget {
                   const SizedBox(height: 16),
                   Text(
                     'Connect with me',
-                    style: GoogleFonts.poppins(
+                    style: AppTypography.heading(
                       fontSize: 12,
                       fontWeight: FontWeight.w500,
                       color: AppColors.secondaryText,
@@ -222,7 +222,7 @@ class MobileDrawerMenu extends StatelessWidget {
               const SizedBox(width: 16),
               Text(
                 title,
-                style: GoogleFonts.poppins(
+                style: AppTypography.heading(
                   fontSize: 15,
                   fontWeight: isActive ? FontWeight.w600 : FontWeight.w500,
                   color: isActive

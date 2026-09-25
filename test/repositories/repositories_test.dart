@@ -120,8 +120,8 @@ void main() {
     const repository = SocialLinksRepository();
     final links = repository.getSocialLinks();
 
-    test('contains strictly LinkedIn, GitHub, and WhatsApp only', () {
-      expect(links.length, equals(3));
+    test('contains LinkedIn, GitHub, WhatsApp, and Email', () {
+      expect(links.length, equals(4));
       final platforms = links.map((l) => l.platform).toList();
       expect(
         platforms,
@@ -129,6 +129,7 @@ void main() {
           SocialPlatform.linkedIn,
           SocialPlatform.gitHub,
           SocialPlatform.whatsApp,
+          SocialPlatform.email,
         ]),
       );
     });
@@ -143,6 +144,9 @@ void main() {
       final whatsApp = links.firstWhere(
         (l) => l.platform == SocialPlatform.whatsApp,
       );
+      final email = links.firstWhere(
+        (l) => l.platform == SocialPlatform.email,
+      );
 
       expect(
         linkedIn.url,
@@ -150,6 +154,12 @@ void main() {
       );
       expect(gitHub.url, equals('https://github.com/YahyaEltayeeb'));
       expect(whatsApp.url, equals('https://wa.me/201289078927'));
+      expect(
+        email.url,
+        equals(
+          'https://mail.google.com/mail/?view=cm&fs=1&to=yahya.mobiledev@gmail.com',
+        ),
+      );
     });
   });
 

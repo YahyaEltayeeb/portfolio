@@ -23,10 +23,7 @@ abstract final class AppStrings {
       'I build scalable, production-ready mobile applications with clean, maintainable architecture and smooth user experiences.';
 
   static const String aboutDescription =
-      'Flutter Developer with 2+ years of hands-on experience building production-ready mobile applications using Clean Architecture, BLoC/Cubit, RESTful APIs, and Firebase.\n\n'
-      'I have delivered production applications featuring real-time tracking, push notifications, payment integrations, Google Maps, and background location services. '
-      'Experienced in Agile/Scrum environments and writing Unit and Widget Tests to ensure application quality and reliability. '
-      'I focus on building clean, maintainable, testable, and high-performance mobile experiences.';
+      "Building scalable, production-ready Flutter apps with clean architecture and seamless user experiences.";
 
   static const String viewProjects = 'View Projects';
   static const String downloadCv = 'Download CV';
@@ -50,7 +47,11 @@ abstract final class AppStrings {
 
   static const String contactTitle = 'Get in Touch';
   static const String contactSubtitle =
-      'Feel free to connect via LinkedIn, GitHub, or WhatsApp for collaboration and opportunities';
+      'Reach out directly via Email, WhatsApp, or connect on LinkedIn and GitHub';
+  static const String email = 'yahya.mobiledev@gmail.com';
+  static const String phone = '+20 128 907 8927';
+  static const String linkedInHandle = 'in/yahya-mohamed';
+  static const String gitHubHandle = 'github.com/YahyaEltayeeb';
 
   // How I Work Steps (5 Steps)
   static const String step1Title = 'Understand Requirements';
@@ -73,10 +74,11 @@ abstract final class AppStrings {
   static const String step5Desc =
       'Deploy to App Store and Google Play, set up continuous monitoring, and deliver ongoing maintenance and enhancements.';
 
-  // Social & Contact (Only LinkedIn, GitHub, WhatsApp)
+  // Social & Contact
   static const String linkedIn = 'LinkedIn';
   static const String gitHub = 'GitHub';
   static const String whatsApp = 'WhatsApp';
+  static const String emailLabel = 'Email';
 
   // Project Badges & Action Buttons
   static const String liveAppBadge = 'Live App';

@@ -1,8 +1,8 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/theme/app_typography.dart';
 import 'logo_widget.dart';
 
 class DesktopFloatingNavbar extends StatelessWidget {
@@ -154,7 +154,7 @@ class _NavItemState extends State<_NavItem> {
             ),
             child: Text(
               widget.title,
-              style: GoogleFonts.poppins(
+              style: AppTypography.heading(
                 fontSize: 13,
                 fontWeight: FontWeight.w600,
                 color: widget.isActive || _isHovered
@@ -192,7 +192,7 @@ class _NavItemState extends State<_NavItem> {
           ),
           child: Text(
             widget.title,
-            style: GoogleFonts.poppins(
+            style: AppTypography.heading(
               fontSize: 13,
               fontWeight: widget.isActive ? FontWeight.w600 : FontWeight.w500,
               color: widget.isActive

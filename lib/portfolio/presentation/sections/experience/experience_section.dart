@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/animations/transitions/visibility_fade_slide.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../repositories/experience_repository.dart';
 import 'experience_card.dart';
@@ -30,7 +30,7 @@ class ExperienceSection extends StatelessWidget {
               // Section Header
               Text(
                 AppStrings.experienceTitle,
-                style: GoogleFonts.poppins(
+                style: AppTypography.heading(
                   fontSize: isMobile ? 28 : 36,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryText,
@@ -42,7 +42,7 @@ class ExperienceSection extends StatelessWidget {
                 constraints: const BoxConstraints(maxWidth: 680),
                 child: Text(
                   AppStrings.experienceSubtitle,
-                  style: GoogleFonts.outfit(
+                  style: AppTypography.body(
                     fontSize: isMobile ? 14 : 16,
                     color: AppColors.secondaryText,
                   ),

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_links.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../repositories/social_links_repository.dart';
 import '../navbar/logo_widget.dart';
@@ -92,7 +92,7 @@ class FooterSection extends StatelessWidget {
               // Bottom Copyright
               Text(
                 AppStrings.copyright,
-                style: GoogleFonts.outfit(
+                style: AppTypography.body(
                   fontSize: 13,
                   color: AppColors.secondaryText,
                 ),
@@ -151,7 +151,7 @@ class _BackToTopButtonState extends State<_BackToTopButton> {
               const SizedBox(width: 6),
               Text(
                 AppStrings.backToTop,
-                style: GoogleFonts.poppins(
+                style: AppTypography.heading(
                   fontSize: 12,
                   fontWeight: FontWeight.w500,
                   color: _isHovered

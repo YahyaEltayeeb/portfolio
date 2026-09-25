@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/animations/transitions/visibility_fade_slide.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../../core/utils/responsive.dart';
 
 /// Direction of continuous horizontal marquee motion.
@@ -86,7 +86,7 @@ class SkillsSection extends StatelessWidget {
               // Section Header
               Text(
                 AppStrings.skillsTitle,
-                style: GoogleFonts.poppins(
+                style: AppTypography.heading(
                   fontSize: isMobile ? 26 : 36,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryText,
@@ -99,7 +99,7 @@ class SkillsSection extends StatelessWidget {
                 constraints: const BoxConstraints(maxWidth: 680),
                 child: Text(
                   AppStrings.skillsSubtitle,
-                  style: GoogleFonts.outfit(
+                  style: AppTypography.body(
                     fontSize: isMobile ? 14 : 16,
                     color: AppColors.secondaryText,
                     height: 1.5,
@@ -492,11 +492,11 @@ class _SkillGlassChipState extends State<SkillGlassChip> {
             SizedBox(width: isMobile ? 8 : 10),
             Text(
               widget.skill.name,
-              style: GoogleFonts.outfit(
-                fontSize: isMobile ? 13 : 14,
-                fontWeight: FontWeight.w500,
+              style: AppTypography.mono(
+                fontSize: isMobile ? 12 : 13,
+                fontWeight: FontWeight.w600,
                 color: AppColors.primaryText,
-                letterSpacing: 0.2,
+                letterSpacing: 0.1,
               ),
             ),
           ],

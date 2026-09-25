@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/animations/transitions/visibility_fade_slide.dart';
 import '../../../../core/constants/app_colors.dart';
 import '../../../../core/constants/app_strings.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../../models/workflow_step_model.dart';
 import '../../../repositories/workflow_repository.dart';
@@ -21,7 +21,7 @@ class HowIWorkSection extends StatelessWidget {
         child: Container(
           constraints: const BoxConstraints(maxWidth: 1200),
           padding: EdgeInsets.symmetric(
-            horizontal: isMobile ? 24 : 48,
+            horizontal: isMobile ? 16 : 48,
             vertical: isMobile ? 40 : 80,
           ),
           child: Column(
@@ -30,7 +30,7 @@ class HowIWorkSection extends StatelessWidget {
               // Section Header
               Text(
                 AppStrings.howIWorkTitle,
-                style: GoogleFonts.poppins(
+                style: AppTypography.heading(
                   fontSize: isMobile ? 28 : 36,
                   fontWeight: FontWeight.bold,
                   color: AppColors.primaryText,
@@ -42,19 +42,31 @@ class HowIWorkSection extends StatelessWidget {
                 constraints: const BoxConstraints(maxWidth: 680),
                 child: Text(
                   AppStrings.howIWorkSubtitle,
-                  style: GoogleFonts.outfit(
+                  style: AppTypography.body(
                     fontSize: isMobile ? 14 : 16,
                     color: AppColors.secondaryText,
                   ),
                   textAlign: TextAlign.center,
                 ),
               ),
-              const SizedBox(height: 56),
+              SizedBox(height: isMobile ? 36 : 56),
 
-              // Responsive Timeline
-              isMobile
-                  ? _buildMobileVerticalTimeline(steps)
-                  : _buildDesktopHorizontalTimeline(steps),
+              // Responsive Process Cards
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final double width = constraints.maxWidth;
+                  if (width >= 960) {
+                    // Desktop: 5 connected cards in a single row with equal heights
+                    return _buildDesktopLayout(steps);
+                  } else if (width >= 620) {
+                    // Tablet: 3 cards on top row, 2 cards on bottom row
+                    return _buildTabletLayout(steps);
+                  } else {
+                    // Mobile: Vertical list of step cards
+                    return _buildMobileLayout(steps);
+                  }
+                },
+              ),
             ],
           ),
         ),
@@ -62,24 +74,25 @@ class HowIWorkSection extends StatelessWidget {
     );
   }
 
-  Widget _buildDesktopHorizontalTimeline(List<WorkflowStepModel> steps) {
+  /// Desktop layout: 5 equal-height cards connected with an elegant horizontal progress bar.
+  Widget _buildDesktopLayout(List<WorkflowStepModel> steps) {
     return Column(
       children: [
-        // Connected Nodes Row with Connecting Lines
+        // Sleek horizontal progress line with numbered checkpoints
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 40),
+          padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Row(
             children: List.generate(steps.length * 2 - 1, (index) {
               if (index.isOdd) {
-                // Connecting line
+                // Connecting gradient line
                 return Expanded(
                   child: Container(
                     height: 2,
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          AppColors.primaryCyan.withValues(alpha: 0.6),
-                          AppColors.glow.withValues(alpha: 0.3),
+                          AppColors.primaryCyan.withValues(alpha: 0.7),
+                          AppColors.primaryCyan.withValues(alpha: 0.25),
                         ],
                       ),
                     ),
@@ -88,109 +101,102 @@ class HowIWorkSection extends StatelessWidget {
               }
 
               final stepIndex = index ~/ 2;
-              final step = steps[stepIndex];
-              return _TimelineNode(
-                stepNumber: step.stepNumber,
-                icon: step.icon,
+              final stepNumber = steps[stepIndex].stepNumber;
+              return Container(
+                width: 28,
+                height: 28,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: const Color(0xFF0B192C),
+                  border: Border.all(
+                    color: AppColors.primaryCyan,
+                    width: 1.5,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primaryCyan.withValues(alpha: 0.35),
+                      blurRadius: 8,
+                    ),
+                  ],
+                ),
+                child: Center(
+                  child: Text(
+                    '0$stepNumber',
+                    style: AppTypography.mono(
+                      fontSize: 10.5,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.primaryCyan,
+                    ),
+                  ),
+                ),
               );
             }),
           ),
         ),
-        const SizedBox(height: 28),
+        const SizedBox(height: 24),
 
-        // 5 Step Cards Row
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: steps.map((step) {
-            return Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
-                child: _StepCard(step: step),
-              ),
-            );
-          }).toList(),
+        // 5 cards sharing uniform equal height
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              for (int i = 0; i < steps.length; i++) ...[
+                if (i > 0) const SizedBox(width: 14),
+                Expanded(
+                  child: _StepCard(step: steps[i]),
+                ),
+              ],
+            ],
+          ),
         ),
       ],
     );
   }
 
-  Widget _buildMobileVerticalTimeline(List<WorkflowStepModel> steps) {
+  /// Tablet layout: 3 cards on top row, 2 cards on bottom row with equal heights per row.
+  Widget _buildTabletLayout(List<WorkflowStepModel> steps) {
     return Column(
-      children: steps.asMap().entries.map((entry) {
-        final index = entry.key;
-        final step = entry.value;
-        final isLast = index == steps.length - 1;
-
-        return IntrinsicHeight(
+      children: [
+        // Row 1: Steps 1, 2, 3
+        IntrinsicHeight(
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // Vertical node + connector line
-              Column(
-                children: [
-                  _TimelineNode(
-                    stepNumber: step.stepNumber,
-                    icon: step.icon,
-                    size: 40,
-                  ),
-                  if (!isLast)
-                    Expanded(
-                      child: Container(
-                        width: 2,
-                        margin: const EdgeInsets.symmetric(vertical: 4),
-                        color: AppColors.primaryCyan.withValues(alpha: 0.3),
-                      ),
-                    ),
-                ],
-              ),
-              const SizedBox(width: 16),
-
-              // Step card
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 24),
-                  child: _StepCard(step: step),
+              for (int i = 0; i < 3; i++) ...[
+                if (i > 0) const SizedBox(width: 14),
+                Expanded(
+                  child: _StepCard(step: steps[i]),
                 ),
-              ),
+              ],
             ],
           ),
-        );
-      }).toList(),
+        ),
+        const SizedBox(height: 14),
+
+        // Row 2: Steps 4, 5
+        IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Expanded(child: _StepCard(step: steps[3])),
+              const SizedBox(width: 14),
+              Expanded(child: _StepCard(step: steps[4])),
+            ],
+          ),
+        ),
+      ],
     );
   }
-}
 
-class _TimelineNode extends StatelessWidget {
-  final int stepNumber;
-  final IconData icon;
-  final double size;
-
-  const _TimelineNode({
-    required this.stepNumber,
-    required this.icon,
-    this.size = 52,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: size,
-      height: size,
-      decoration: BoxDecoration(
-        color: AppColors.card,
-        shape: BoxShape.circle,
-        border: Border.all(color: AppColors.primaryCyan, width: 2),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primaryCyan.withValues(alpha: 0.3),
-            blurRadius: 12,
-            spreadRadius: 1,
-          ),
+  /// Mobile layout: Vertical clean list of step cards.
+  Widget _buildMobileLayout(List<WorkflowStepModel> steps) {
+    return Column(
+      children: [
+        for (int i = 0; i < steps.length; i++) ...[
+          if (i > 0) const SizedBox(height: 12),
+          _StepCard(step: steps[i]),
         ],
-      ),
-      child: Center(
-        child: Icon(icon, size: size * 0.45, color: AppColors.primaryCyan),
-      ),
+      ],
     );
   }
 }
@@ -213,64 +219,128 @@ class _StepCardState extends State<_StepCard> {
       onEnter: (_) => setState(() => _isHovered = true),
       onExit: (_) => setState(() => _isHovered = false),
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 250),
+        duration: const Duration(milliseconds: 240),
         curve: Curves.easeOutCubic,
-        padding: const EdgeInsets.all(20),
+        transform: Matrix4.translationValues(
+          0.0,
+          _isHovered ? -4.0 : 0.0,
+          0.0,
+        ),
+        padding: const EdgeInsets.all(18),
         decoration: BoxDecoration(
-          color: _isHovered ? AppColors.cardHover : AppColors.card,
+          color: _isHovered
+              ? AppColors.cardHover.withValues(alpha: 0.95)
+              : AppColors.card,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(
             color: _isHovered
-                ? AppColors.primaryCyan.withValues(alpha: 0.6)
+                ? AppColors.primaryCyan.withValues(alpha: 0.7)
                 : AppColors.border,
-            width: _isHovered ? 1.5 : 1,
+            width: _isHovered ? 1.3 : 1.0,
           ),
-          boxShadow: _isHovered
-              ? [
-                  BoxShadow(
-                    color: AppColors.primaryCyan.withValues(alpha: 0.12),
-                    blurRadius: 18,
-                    offset: const Offset(0, 6),
-                  ),
-                ]
-              : [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.15),
-                    blurRadius: 6,
-                  ),
-                ],
+          boxShadow: [
+            if (_isHovered) ...[
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.4),
+                blurRadius: 20,
+                offset: const Offset(0, 10),
+              ),
+              BoxShadow(
+                color: AppColors.primaryCyan.withValues(alpha: 0.15),
+                blurRadius: 18,
+                spreadRadius: 1,
+              ),
+            ] else ...[
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.2),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
+              ),
+            ],
+          ],
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Step Number Pill
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-              decoration: BoxDecoration(
-                color: AppColors.primaryCyan.withValues(alpha: 0.12),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: AppColors.primaryCyan.withValues(alpha: 0.3),
+            // Top Row: Glowing Icon + Step Number Pill
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: 42,
+                  height: 42,
+                  decoration: BoxDecoration(
+                    color: _isHovered
+                        ? AppColors.primaryCyan.withValues(alpha: 0.2)
+                        : AppColors.primaryCyan.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(11),
+                    border: Border.all(
+                      color: _isHovered
+                          ? AppColors.primaryCyan
+                          : AppColors.primaryCyan.withValues(alpha: 0.3),
+                      width: 1.2,
+                    ),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      widget.step.icon,
+                      size: 20,
+                      color: AppColors.primaryCyan,
+                    ),
+                  ),
                 ),
-              ),
-              child: Text(
-                '0${widget.step.stepNumber}',
-                style: GoogleFonts.outfit(
-                  fontSize: 11,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.primaryCyan,
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 9,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: _isHovered
+                        ? AppColors.primaryCyan.withValues(alpha: 0.15)
+                        : Colors.white.withValues(alpha: 0.04),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: _isHovered
+                          ? AppColors.primaryCyan.withValues(alpha: 0.5)
+                          : AppColors.border,
+                      width: 1.0,
+                    ),
+                  ),
+                  child: Text(
+                    '0${widget.step.stepNumber}',
+                    style: AppTypography.mono(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.bold,
+                      color: _isHovered
+                          ? AppColors.primaryCyan
+                          : AppColors.secondaryText,
+                      letterSpacing: 0.3,
+                    ),
+                  ),
                 ),
-              ),
+              ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
 
-            // Step Title
-            Text(
-              widget.step.title,
-              style: GoogleFonts.poppins(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: AppColors.primaryText,
+            // Step Title with consistent height so descriptions align horizontally
+            SizedBox(
+              height: 44,
+              child: Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  widget.step.title,
+                  style: AppTypography.heading(
+                    fontSize: 15.5,
+                    fontWeight: FontWeight.bold,
+                    color: _isHovered
+                        ? AppColors.primaryCyan
+                        : AppColors.primaryText,
+                    height: 1.25,
+                    letterSpacing: -0.2,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ),
             const SizedBox(height: 8),
@@ -278,8 +348,8 @@ class _StepCardState extends State<_StepCard> {
             // Step Description
             Text(
               widget.step.description,
-              style: GoogleFonts.outfit(
-                fontSize: 13,
+              style: AppTypography.body(
+                fontSize: 13.0,
                 color: AppColors.secondaryText,
                 height: 1.5,
               ),

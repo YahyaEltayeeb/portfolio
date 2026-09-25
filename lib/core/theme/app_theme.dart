@@ -1,56 +1,56 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
+import 'app_typography.dart';
 
 /// Dark theme configuration for Yahya Mohamed's portfolio.
 abstract final class AppTheme {
   static ThemeData get darkTheme {
     final textTheme = TextTheme(
-      displayLarge: GoogleFonts.poppins(
+      displayLarge: AppTypography.heading(
         fontSize: 48,
         fontWeight: FontWeight.bold,
         color: AppColors.primaryText,
         letterSpacing: -0.5,
       ),
-      displayMedium: GoogleFonts.poppins(
+      displayMedium: AppTypography.heading(
         fontSize: 36,
         fontWeight: FontWeight.bold,
         color: AppColors.primaryText,
         letterSpacing: -0.5,
       ),
-      displaySmall: GoogleFonts.poppins(
+      displaySmall: AppTypography.heading(
         fontSize: 28,
         fontWeight: FontWeight.w600,
         color: AppColors.primaryText,
       ),
-      headlineMedium: GoogleFonts.poppins(
+      headlineMedium: AppTypography.heading(
         fontSize: 22,
         fontWeight: FontWeight.w600,
         color: AppColors.primaryText,
       ),
-      headlineSmall: GoogleFonts.poppins(
+      headlineSmall: AppTypography.heading(
         fontSize: 18,
         fontWeight: FontWeight.w600,
         color: AppColors.primaryText,
       ),
-      titleLarge: GoogleFonts.poppins(
+      titleLarge: AppTypography.heading(
         fontSize: 16,
         fontWeight: FontWeight.w600,
         color: AppColors.primaryText,
       ),
-      bodyLarge: GoogleFonts.outfit(
+      bodyLarge: AppTypography.body(
         fontSize: 16,
         fontWeight: FontWeight.normal,
         color: AppColors.secondaryText,
         height: 1.6,
       ),
-      bodyMedium: GoogleFonts.outfit(
+      bodyMedium: AppTypography.body(
         fontSize: 14,
         fontWeight: FontWeight.normal,
         color: AppColors.secondaryText,
         height: 1.5,
       ),
-      labelLarge: GoogleFonts.poppins(
+      labelLarge: AppTypography.heading(
         fontSize: 14,
         fontWeight: FontWeight.w600,
         color: AppColors.primaryText,

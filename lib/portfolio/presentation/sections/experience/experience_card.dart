@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../models/experience_model.dart';
 
 class ExperienceCard extends StatefulWidget {
@@ -28,99 +28,97 @@ class _ExperienceCardState extends State<ExperienceCard> {
         final double cardAvailableWidth = constraints.maxWidth - 42.0;
         final bool isNarrow = cardAvailableWidth < 560;
 
-        return IntrinsicHeight(
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // Timeline indicator column
-              Column(
-                children: [
-                  // Circle node
-                  Container(
-                    width: 18,
-                    height: 18,
-                    decoration: BoxDecoration(
-                      color: AppColors.background,
-                      shape: BoxShape.circle,
-                      border:
-                          Border.all(color: AppColors.primaryCyan, width: 3.5),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.primaryCyan.withValues(alpha: 0.5),
-                          blurRadius: 8,
-                        ),
+        return Stack(
+          clipBehavior: Clip.none,
+          children: [
+            // Connecting line
+            if (!widget.isLast)
+              Positioned(
+                left: 8,
+                top: 22,
+                bottom: 0,
+                child: Container(
+                  width: 2,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        AppColors.primaryCyan.withValues(alpha: 0.6),
+                        AppColors.primaryCyan.withValues(alpha: 0.15),
                       ],
                     ),
                   ),
-                  // Connecting line
-                  if (!widget.isLast)
-                    Expanded(
-                      child: Container(
-                        width: 2,
-                        margin: const EdgeInsets.symmetric(vertical: 4),
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            colors: [
-                              AppColors.primaryCyan.withValues(alpha: 0.6),
-                              AppColors.primaryCyan.withValues(alpha: 0.15),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
+                ),
               ),
-              const SizedBox(width: 24),
 
-              // Experience Card Details
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 36),
-                  child: MouseRegion(
-                    onEnter: (_) => setState(() => _isHovered = true),
-                    onExit: (_) => setState(() => _isHovered = false),
-                    child: AnimatedContainer(
-                      duration: const Duration(milliseconds: 250),
-                      padding: EdgeInsets.all(isNarrow ? 18 : 24),
-                      decoration: BoxDecoration(
-                        color:
-                            _isHovered ? AppColors.cardHover : AppColors.card,
-                        borderRadius: BorderRadius.circular(16),
-                        border: Border.all(
-                          color: _isHovered
-                              ? AppColors.primaryCyan.withValues(alpha: 0.6)
-                              : AppColors.border,
-                          width: _isHovered ? 1.5 : 1,
-                        ),
-                        boxShadow: _isHovered
-                            ? [
-                                BoxShadow(
-                                  color: AppColors.primaryCyan.withValues(
-                                    alpha: 0.1,
-                                  ),
-                                  blurRadius: 18,
-                                  offset: const Offset(0, 6),
-                                ),
-                              ]
-                            : [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.2),
-                                  blurRadius: 8,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
+            // Circle node
+            Positioned(
+              left: 0,
+              top: 0,
+              child: Container(
+                width: 18,
+                height: 18,
+                decoration: BoxDecoration(
+                  color: AppColors.background,
+                  shape: BoxShape.circle,
+                  border: Border.all(color: AppColors.primaryCyan, width: 3.5),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primaryCyan.withValues(alpha: 0.5),
+                      blurRadius: 8,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+
+            // Experience Card Details
+            Padding(
+              padding: const EdgeInsets.only(left: 42, bottom: 36),
+              child: MouseRegion(
+                onEnter: (_) => setState(() => _isHovered = true),
+                onExit: (_) => setState(() => _isHovered = false),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 250),
+                  padding: EdgeInsets.all(isNarrow ? 18 : 24),
+                  decoration: BoxDecoration(
+                    color: _isHovered ? AppColors.cardHover : AppColors.card,
+                    borderRadius: BorderRadius.circular(16),
+                    border: Border.all(
+                      color: _isHovered
+                          ? AppColors.primaryCyan.withValues(alpha: 0.6)
+                          : AppColors.border,
+                      width: _isHovered ? 1.5 : 1,
+                    ),
+                    boxShadow: _isHovered
+                        ? [
+                            BoxShadow(
+                              color: AppColors.primaryCyan.withValues(
+                                alpha: 0.1,
+                              ),
+                              blurRadius: 18,
+                              offset: const Offset(0, 6),
+                            ),
+                          ]
+                        : [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: 0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                           // Header: Narrow layout (< 560px) vs Desktop layout (>= 560px)
                           if (isNarrow) ...[
                             // 1. Date first as simple uppercase text without badge/container
                             Text(
                               widget.experience.period.toUpperCase(),
-                              style: GoogleFonts.outfit(
+                              style: AppTypography.mono(
                                 fontSize: 12,
                                 fontWeight: FontWeight.w500,
                                 letterSpacing: 0.8,
@@ -134,7 +132,7 @@ class _ExperienceCardState extends State<ExperienceCard> {
                             // 2. Job Title below date across full width
                             Text(
                               widget.experience.title,
-                              style: GoogleFonts.poppins(
+                              style: AppTypography.heading(
                                 fontSize: 21,
                                 fontWeight: FontWeight.bold,
                                 color: AppColors.primaryText,
@@ -147,7 +145,7 @@ class _ExperienceCardState extends State<ExperienceCard> {
                             // 3. Company below job title
                             Text(
                               widget.experience.company,
-                              style: GoogleFonts.poppins(
+                              style: AppTypography.heading(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
                                 color: AppColors.primaryCyan,
@@ -167,7 +165,7 @@ class _ExperienceCardState extends State<ExperienceCard> {
                                     children: [
                                       Text(
                                         widget.experience.title,
-                                        style: GoogleFonts.poppins(
+                                        style: AppTypography.heading(
                                           fontSize: 20,
                                           fontWeight: FontWeight.bold,
                                           color: AppColors.primaryText,
@@ -176,7 +174,7 @@ class _ExperienceCardState extends State<ExperienceCard> {
                                       const SizedBox(height: 4),
                                       Text(
                                         widget.experience.company,
-                                        style: GoogleFonts.poppins(
+                                        style: AppTypography.heading(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w600,
                                           color: AppColors.primaryCyan,
@@ -205,8 +203,8 @@ class _ExperienceCardState extends State<ExperienceCard> {
                                   ),
                                   child: Text(
                                     widget.experience.period,
-                                    style: GoogleFonts.outfit(
-                                      fontSize: 12,
+                                    style: AppTypography.mono(
+                                      fontSize: 11.5,
                                       fontWeight: FontWeight.w600,
                                       color: AppColors.primaryCyan,
                                     ),
@@ -237,7 +235,7 @@ class _ExperienceCardState extends State<ExperienceCard> {
                                   Expanded(
                                     child: Text(
                                       bullet,
-                                      style: GoogleFonts.outfit(
+                                      style: AppTypography.body(
                                         fontSize: 14,
                                         color: AppColors.secondaryText,
                                         height: 1.5,
@@ -271,8 +269,8 @@ class _ExperienceCardState extends State<ExperienceCard> {
                                 ),
                                 child: Text(
                                   tech,
-                                  style: GoogleFonts.outfit(
-                                    fontSize: 12,
+                                  style: AppTypography.mono(
+                                    fontSize: 11.5,
                                     color: AppColors.secondaryText,
                                     fontWeight: FontWeight.w500,
                                   ),
@@ -285,11 +283,9 @@ class _ExperienceCardState extends State<ExperienceCard> {
                     ),
                   ),
                 ),
-              ),
-            ],
-          ),
+              ],
+            );
+          },
         );
-      },
-    );
-  }
+      }
 }

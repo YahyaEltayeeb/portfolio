@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../models/skill_model.dart';
 
 class SkillCategoryCard extends StatefulWidget {
@@ -79,7 +79,7 @@ class _SkillCategoryCardState extends State<SkillCategoryCard> {
                 Expanded(
                   child: Text(
                     widget.category,
-                    style: GoogleFonts.poppins(
+                    style: AppTypography.heading(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: AppColors.primaryText,
@@ -139,8 +139,8 @@ class _SkillBadgeState extends State<_SkillBadge> {
         ),
         child: Text(
           widget.name,
-          style: GoogleFonts.outfit(
-            fontSize: 13,
+          style: AppTypography.mono(
+            fontSize: 12,
             fontWeight: _badgeHovered ? FontWeight.w600 : FontWeight.w500,
             color: _badgeHovered
                 ? AppColors.primaryCyan

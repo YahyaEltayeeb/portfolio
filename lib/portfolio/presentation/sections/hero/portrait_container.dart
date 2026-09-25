@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import '../../../../core/constants/app_assets.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/theme/app_typography.dart';
 import '../../../../core/utils/responsive.dart';
 import '../../widgets/portfolio_image.dart';
 
@@ -191,7 +191,7 @@ class _PortraitContainerState extends State<PortraitContainer> {
             child: Text(
               'Flutter Developer • Available for Opportunities',
               textAlign: TextAlign.center,
-              style: GoogleFonts.outfit(
+              style: AppTypography.body(
                 fontSize: isMobile ? 12 : 13,
                 fontWeight: FontWeight.w500,
                 color: AppColors.secondaryText,
